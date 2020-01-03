@@ -1,19 +1,26 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
-using System.Drawing;
 using UnityEngine;
+using UnityEngine.Tilemaps;
 
-public enum ETileType
+public enum EMazeTileType
 {
 	Ground,
-	GroundEmpty,
-	GroundEnemy,
 	Wall,
-	Door
+	GhostDoor,
+	GhostHome
 }
 
-public class MazeTile : MonoBehaviour
+public class MazeTile : Tile
 {
-	protected Point point;
-	protected ETileType type;
+	public Vector3Int LocalPlace { get; set; }
+
+	public Vector3 WorldLocation { get; set; }
+
+	public TileBase TileBase { get; set; }
+
+	public string Name { get; set; }
+
+	public EMazeTileType TileType { get; set; }
+
 }
