@@ -9,9 +9,16 @@ public class StageManager : Singleton<StageManager>
 	GameObject debugStage;
 	[SerializeField]
 	GameObject prefPacMan;
+	[SerializeField]
+	GameObject prefBlinky;
+	[SerializeField]
+	GameObject prefPinky;
 
-	Stage currentStage;
 	PacMan player;
+	List<Ghost> ghostList = new List<Ghost>();
+
+	public PacMan Player { get { return player; } }
+	public Stage CurrentStage { get; private set; }
 
 	void Awake()
 	{
@@ -20,30 +27,40 @@ public class StageManager : Singleton<StageManager>
 
 	public void InitStage()
 	{
-		currentStage = Instantiate(debugStage).GetComponent<Stage>();
+		CurrentStage = Instantiate(debugStage).GetComponent<Stage>();
 
 		CreatePlayer();
+		CreateGhosts();
 	}
 
 	public void ResetStage()
 	{
-		player.SetPlace(currentStage.GetPlayerStartPlace());
+		Player.SetPlace(CurrentStage.GetPlayerStartPlace());
 	}
 
 	void CreatePlayer()
 	{
 		player = Instantiate(prefPacMan).GetComponent<PacMan>();
-		player.SetPlace(currentStage.GetPlayerStartPlace());
+		Player.Init(CurrentStage.GetPlayerStartPlace());
 	}
 
 	void CreateGhosts()
 	{
+		// Debug!
+		var ghostPlaceList = CurrentStage.GetGhostStartPlace();
 
+		var ghost = Instantiate(prefBlinky).GetComponent<Blinky>();
+		ghost.Init(ghostPlaceList[0], CurrentStage.Min, CurrentStage.Max);
+		ghostList.Add(ghost);
+
+		var ghost2 = Instantiate(prefPinky).GetComponent<Pinky>();
+		ghost2.Init(ghostPlaceList[1], CurrentStage.Min, CurrentStage.Max);
+		ghostList.Add(ghost2);
 	}
 
 	public bool ComparePlayer(GameObject gameObject)
 	{
-		if(player.gameObject == gameObject)
+		if(Player.gameObject == gameObject)
 		{
 			return true;
 		}
@@ -51,9 +68,9 @@ public class StageManager : Singleton<StageManager>
 		return false;
 	}
 
-	public bool CanMovePlace(Vector3Int place)
+	public bool CanMovePlace(Vector2Int place)
 	{
-		return currentStage.CanMove(place);
+		return CurrentStage.CanMove(place);
 	}
 
 }

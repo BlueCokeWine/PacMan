@@ -13,6 +13,8 @@ public enum EMazeTileType
 
 public class MazeTile : Tile
 {
+	
+
 	public Vector3Int LocalPlace { get; set; }
 
 	public Vector3 WorldLocation { get; set; }

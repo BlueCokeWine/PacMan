@@ -8,8 +8,8 @@ public class MoveHandler : MonoBehaviour
 
 	float moveSpeed;
 	float moveTime = 0.0f;
-	Vector3Int startPlace;
-	Vector3Int destPlace;
+	Vector2Int startPlace;
+	Vector2Int destPlace;
 
 	public Action arriveEvent;
 
@@ -35,7 +35,7 @@ public class MoveHandler : MonoBehaviour
 		}
 	}
 
-	public void SetDestination(Vector3Int currentPlace, Vector3Int nextPlace)
+	public void SetDestination(Vector2Int currentPlace, Vector2Int nextPlace)
 	{
 		startPlace = currentPlace;
 		destPlace = nextPlace;

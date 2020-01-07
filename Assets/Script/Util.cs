@@ -16,4 +16,14 @@ public class Util
 		return vectorInt;
 	}
 
+	public static Vector2Int RoundToVectorInt(Vector2 vector)
+	{
+		Vector2Int vectorInt = new Vector2Int();
+
+		vectorInt.x = Mathf.RoundToInt(vector.x);
+		vectorInt.y = Mathf.RoundToInt(vector.y);
+
+		return vectorInt;
+	}
+
 }

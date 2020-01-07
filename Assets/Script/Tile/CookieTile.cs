@@ -4,7 +4,7 @@ using UnityEngine;
 using UnityEngine.Tilemaps;
 using UnityEditor;
 
-public class DotFoodTile : Tile
+public class CookieTile : Tile
 {
 	public override bool StartUp(Vector3Int position, ITilemap tilemap, GameObject go)
 	{
@@ -12,16 +12,15 @@ public class DotFoodTile : Tile
 	}
 
 #if UNITY_EDITOR
-	[MenuItem("Assets/Create/Tiles/DotFoodTile")]
+	[MenuItem("Assets/Create/Tiles/CookieTile")]
 	public static void CreateWaterTile()
 	{
-		string path = EditorUtility.SaveFilePanelInProject("Save DotFoodTile", "New DotFoodTile", "asset", "Save DotFoodTile", "Assets");
+		string path = EditorUtility.SaveFilePanelInProject("Save CookieTile", "New CookieTile", "asset", "Save CookieTile", "Assets");
 		if (path == "")
 		{
 			return;
 		}
-		AssetDatabase.CreateAsset(CreateInstance<DotFoodTile>(), path);
+		AssetDatabase.CreateAsset(CreateInstance<CookieTile>(), path);
 	}
-
 #endif
 }

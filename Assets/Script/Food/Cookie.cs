@@ -2,13 +2,13 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class DotFood : Food
+public class Cookie : Food
 {
 	public const int Score = 100;
 
 	void Awake()
 	{
-		foodType = EFood.DotFood;
+		foodType = EFood.Cookie;
 	}
 
 	protected override void EatEvent()

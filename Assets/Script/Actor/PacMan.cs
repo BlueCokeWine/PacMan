@@ -11,10 +11,11 @@ public class PacMan : Actor
 	MoveHandler moveHandler;
 	AnimationHandler animHandler;
 
-	Direction currentDir;
+	public Direction CurrentDir { get; private set; }
 	Direction reservDir;
+	Vector2Int startPlace;
 
-	void Awake()
+	public void Init(Vector2Int startPlace)
 	{
 		mainCamera = Camera.main;
 
@@ -22,15 +23,18 @@ public class PacMan : Actor
 		animHandler = GetComponent<AnimationHandler>();
 		moveHandler.Init(moveSpeed, SetNextPlace);
 
-		currentDir = Direction.Empty;
+		this.startPlace = startPlace;
+		CurrentDir = Direction.Empty;
 		reservDir = Direction.Empty;
+
+		SetPlace(startPlace);
 	}
 
 	void Update()
 	{
 		KeyInput();
 
-		if(currentDir != Direction.Empty)
+		if(CurrentDir != Direction.Empty)
 		{
 			moveHandler.Move();
 		}
@@ -69,7 +73,7 @@ public class PacMan : Actor
 			reservDir.Y = EDirY.None;
 		}
 
-		if(currentDir == Direction.Empty && reservDir != Direction.Empty)
+		if(CurrentDir == Direction.Empty && reservDir != Direction.Empty)
 		{
 			SetNextPlace();
 		}
@@ -87,31 +91,31 @@ public class PacMan : Actor
 
 	void SetNextPlace()
 	{
-		currentPlace = Util.RoundToVectorInt(transform.position);
-		Vector3Int nextPlace = currentPlace;
+		CurrentPlace = Util.RoundToVectorInt((Vector2)transform.position);
+		Vector2Int nextPlace = CurrentPlace;
 
 		if (reservDir != Direction.Empty && CheckDirectionPlace(reservDir, ref nextPlace))
 		{
-			currentDir = reservDir;
+			CurrentDir = reservDir;
 			reservDir = Direction.Empty;
-			moveHandler.SetDestination(currentPlace, nextPlace);
-			animHandler.SetDirection(currentDir);
+			moveHandler.SetDestination(CurrentPlace, nextPlace);
+			animHandler.SetDirection(CurrentDir);
 		}
-		else if (currentDir != Direction.Empty && CheckDirectionPlace(currentDir, ref nextPlace))
+		else if (CurrentDir != Direction.Empty && CheckDirectionPlace(CurrentDir, ref nextPlace))
 		{
-			moveHandler.SetDestination(currentPlace, nextPlace);
+			moveHandler.SetDestination(CurrentPlace, nextPlace);
 		}
 		else
 		{
-			currentDir = Direction.Empty;
+			CurrentDir = Direction.Empty;
 			reservDir = Direction.Empty;
-			animHandler.StopAnimation();
+			//animHandler.StopAnimation();
 		}
 	}
 
-	bool CheckDirectionPlace(Direction dir, ref Vector3Int nextPlace)
+	bool CheckDirectionPlace(Direction dir, ref Vector2Int nextPlace)
 	{
-		Vector3Int tempPlace = nextPlace;
+		Vector2Int tempPlace = nextPlace;
 		tempPlace.x += (int)dir.X;
 		tempPlace.y += (int)dir.Y;
 

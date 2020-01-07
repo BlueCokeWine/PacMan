@@ -34,8 +34,8 @@ public class ScoreManager
 	{
 		switch (foodType)
 		{
-			case EFood.DotFood:
-				Score += DotFood.Score;
+			case EFood.Cookie:
+				Score += Cookie.Score;
 				break;
 		}
 	}

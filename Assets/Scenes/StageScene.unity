@@ -152,6 +152,10 @@ MonoBehaviour:
   debugStage: {fileID: 1328893647, guid: d8d3441c219e6c544944c3dd171976fe, type: 3}
   prefPacMan: {fileID: 5616831782477443947, guid: cee6c91e4a6ab9441b7602585f5c1cb8,
     type: 3}
+  prefBlinky: {fileID: 1346698031506604938, guid: 8f55c4cafd491034f91014804a9ea8b5,
+    type: 3}
+  prefPinky: {fileID: 1447043103798024689, guid: b0b5d80164ea575499707613c687b798,
+    type: 3}
 --- !u!4 &848230277
 Transform:
   m_ObjectHideFlags: 0

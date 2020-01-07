@@ -4,7 +4,7 @@ using UnityEngine;
 
 public enum EFood
 {
-	DotFood
+	Cookie
 }
 
 public abstract class Food : MonoBehaviour
