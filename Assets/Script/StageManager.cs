@@ -13,6 +13,10 @@ public class StageManager : Singleton<StageManager>
 	GameObject prefBlinky;
 	[SerializeField]
 	GameObject prefPinky;
+	[SerializeField]
+	GameObject prefInky;
+	[SerializeField]
+	GameObject prefClyde;
 
 	PacMan player;
 	List<Ghost> ghostList = new List<Ghost>();
@@ -56,6 +60,10 @@ public class StageManager : Singleton<StageManager>
 		var ghost2 = Instantiate(prefPinky).GetComponent<Pinky>();
 		ghost2.Init(ghostPlaceList[1], CurrentStage.Min, CurrentStage.Max);
 		ghostList.Add(ghost2);
+
+		var ghost4 = Instantiate(prefClyde).GetComponent<Clyde>();
+		ghost4.Init(ghostPlaceList[3], CurrentStage.Min, CurrentStage.Max);
+		ghostList.Add(ghost4);
 	}
 
 	public bool ComparePlayer(GameObject gameObject)

@@ -57,12 +57,12 @@ public class Stage : MonoBehaviour
 	public bool CanMove(Vector2Int place)
 	{
 		Vector3Int checkPlace = new Vector3Int(place.x, place.y, 0);
-		if (wallTilemap.HasTile(checkPlace))
+		if (!wallTilemap.HasTile(checkPlace) && groundTilemap.HasTile(checkPlace))
 		{
-			return false;
-		}
+			return true;
 
-		return true;
+		}
+		return false;
 	}
 
 }

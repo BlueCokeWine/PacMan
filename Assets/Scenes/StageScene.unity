@@ -156,6 +156,9 @@ MonoBehaviour:
     type: 3}
   prefPinky: {fileID: 1447043103798024689, guid: b0b5d80164ea575499707613c687b798,
     type: 3}
+  prefInky: {fileID: 0}
+  prefClyde: {fileID: 7385762064733513343, guid: 6008ccf84c3829d41bc1d2a4397fe05b,
+    type: 3}
 --- !u!4 &848230277
 Transform:
   m_ObjectHideFlags: 0

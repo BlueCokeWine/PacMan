@@ -43,9 +43,9 @@ public abstract class Ghost : Actor
 	protected EStat currentStat;
 	protected Direction direction;
 
-	Vector2Int homePlace;
-	Vector2Int stageMin, stageMax;
-	Vector2Int startPlace, targetPlace;
+	protected Vector2Int homePlace;
+	protected Vector2Int stageMin, stageMax;
+	protected Vector2Int startPlace, targetPlace;
 	protected Queue<Vector2Int> waypointQueue = new Queue<Vector2Int>();
 
 	Node[,] nodeArray;
