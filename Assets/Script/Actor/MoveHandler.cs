@@ -7,7 +7,7 @@ public class MoveHandler : MonoBehaviour
 {
 
 	float moveSpeed;
-	float moveTime;
+	float moveTime = 0.0f;
 	Vector3Int startPlace;
 	Vector3Int destPlace;
 

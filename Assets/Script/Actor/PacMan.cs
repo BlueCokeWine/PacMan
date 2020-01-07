@@ -5,7 +5,7 @@ using UnityEngine;
 public class PacMan : Actor
 {
 	[SerializeField]
-	float moveSpeed = 1.0f;
+	float moveSpeed;
 
 	Camera mainCamera;
 	MoveHandler moveHandler;
@@ -96,29 +96,28 @@ public class PacMan : Actor
 			reservDir = Direction.Empty;
 			moveHandler.SetDestination(currentPlace, nextPlace);
 			animHandler.SetDirection(currentDir);
-			Debug.Log("Reserv Dir Called");
 		}
-		else if (CheckDirectionPlace(currentDir, ref nextPlace))
+		else if (currentDir != Direction.Empty && CheckDirectionPlace(currentDir, ref nextPlace))
 		{
 			moveHandler.SetDestination(currentPlace, nextPlace);
-			Debug.Log("Next Dir Called");
 		}
 		else
 		{
 			currentDir = Direction.Empty;
 			reservDir = Direction.Empty;
 			animHandler.StopAnimation();
-			Debug.Log("Blocked Called");
 		}
 	}
 
 	bool CheckDirectionPlace(Direction dir, ref Vector3Int nextPlace)
 	{
-		nextPlace.x += (int)dir.X;
-		nextPlace.y += (int)dir.Y;
+		Vector3Int tempPlace = nextPlace;
+		tempPlace.x += (int)dir.X;
+		tempPlace.y += (int)dir.Y;
 
-		if (StageManager.Instance.CanMovePlace(nextPlace))
+		if (StageManager.Instance.CanMovePlace(tempPlace))
 		{
+			nextPlace = tempPlace;
 			return true;
 		}
 		return false;

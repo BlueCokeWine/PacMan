@@ -152,8 +152,6 @@ MonoBehaviour:
   debugStage: {fileID: 1328893647, guid: d8d3441c219e6c544944c3dd171976fe, type: 3}
   prefPacMan: {fileID: 5616831782477443947, guid: cee6c91e4a6ab9441b7602585f5c1cb8,
     type: 3}
-  currentStage: {fileID: 0}
-  player: {fileID: 0}
 --- !u!4 &848230277
 Transform:
   m_ObjectHideFlags: 0
