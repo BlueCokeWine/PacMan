@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -6,6 +7,8 @@ public class AnimationParam
 {
 	public const string DirX = "DirX";
 	public const string DirY = "DirY";
+
+	public const string RunOutTimidTime = "RunOutTimidTime";
 }
 
 public class AnimationHandler : MonoBehaviour
@@ -16,7 +19,7 @@ public class AnimationHandler : MonoBehaviour
 
 	public void SetDirection(Direction direction)
 	{
-		if(direction == Direction.Empty)
+		if (direction == Direction.Empty)
 		{
 			//StopAnimation();
 			return;
@@ -27,9 +30,19 @@ public class AnimationHandler : MonoBehaviour
 		//animator.speed = 0.8f;
 	}
 
+	public void SetRunOutTimidTime(bool isRunOut)
+	{
+		animator.SetBool(AnimationParam.RunOutTimidTime, isRunOut);
+	}
+
 	public void StopAnimation()
 	{
 		animator.speed = 0.0f;
+	}
+
+	public void SetAnimator(RuntimeAnimatorController controller)
+	{
+		animator.runtimeAnimatorController = controller;
 	}
 
 }
