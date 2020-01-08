@@ -26,18 +26,11 @@ public class ScoreManager
 		Score = 0;
 	}
 
-	public int Score {
-		get; private set;
-	}
+	public int Score { get; private set; }
 
-	public void AddFoodScore(EFood foodType)
+	public void AddFoodScore(int score)
 	{
-		switch (foodType)
-		{
-			case EFood.Cookie:
-				Score += Cookie.Score;
-				break;
-		}
+		Score += score;
 	}
 
 }

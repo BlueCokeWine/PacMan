@@ -18,10 +18,8 @@ public class StageManager : Singleton<StageManager>
 	[SerializeField]
 	GameObject prefClyde;
 
-	PacMan player;
-	List<Ghost> ghostList = new List<Ghost>();
-
-	public PacMan Player { get { return player; } }
+	public PacMan Player { get; private set; }
+	public List<Ghost> GhostList { get; private set; }
 	public Stage CurrentStage { get; private set; }
 
 	void Awake()
@@ -44,26 +42,30 @@ public class StageManager : Singleton<StageManager>
 
 	void CreatePlayer()
 	{
-		player = Instantiate(prefPacMan).GetComponent<PacMan>();
+		Player = Instantiate(prefPacMan).GetComponent<PacMan>();
 		Player.Init(CurrentStage.GetPlayerStartPlace());
 	}
 
 	void CreateGhosts()
 	{
-		// Debug!
+		GhostList = new List<Ghost>();
 		var ghostPlaceList = CurrentStage.GetGhostStartPlace();
 
-		var ghost = Instantiate(prefBlinky).GetComponent<Blinky>();
-		ghost.Init(ghostPlaceList[0], CurrentStage.Min, CurrentStage.Max);
-		ghostList.Add(ghost);
+		var ghost1 = Instantiate(prefBlinky).GetComponent<Blinky>();
+		ghost1.Init(ghostPlaceList[0], CurrentStage.Min, CurrentStage.Max);
+		GhostList.Add(ghost1);
 
 		var ghost2 = Instantiate(prefPinky).GetComponent<Pinky>();
 		ghost2.Init(ghostPlaceList[1], CurrentStage.Min, CurrentStage.Max);
-		ghostList.Add(ghost2);
+		GhostList.Add(ghost2);
+
+		var ghost3 = Instantiate(prefInky).GetComponent<Inky>();
+		ghost3.Init(ghostPlaceList[2], CurrentStage.Min, CurrentStage.Max);
+		GhostList.Add(ghost3);
 
 		var ghost4 = Instantiate(prefClyde).GetComponent<Clyde>();
 		ghost4.Init(ghostPlaceList[3], CurrentStage.Min, CurrentStage.Max);
-		ghostList.Add(ghost4);
+		GhostList.Add(ghost4);
 	}
 
 	public bool ComparePlayer(GameObject gameObject)
