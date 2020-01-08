@@ -1,11 +1,11 @@
 fileFormatVersion: 2
-guid: a2aaa1c1fe5169648abcac8d81ca8619
+guid: 26ee0df2a4b220841b41daa244a58ee2
 MonoImporter:
   externalObjects: {}
   serializedVersion: 2
   defaultReferences:
   - m_Sprite: {instanceID: 0}
-  - m_InstancedGameObject: {fileID: 486483364234368234, guid: 6c31bdacf4611d241bb0b64b8abe2f09,
+  - m_InstancedGameObject: {fileID: 6483262739974542886, guid: 9dedae057ca625d4bb98489c64a5b661,
       type: 3}
   executionOrder: 0
   icon: {instanceID: 0}
