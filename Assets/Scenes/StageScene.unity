@@ -156,7 +156,8 @@ MonoBehaviour:
     type: 3}
   prefPinky: {fileID: 1447043103798024689, guid: b0b5d80164ea575499707613c687b798,
     type: 3}
-  prefInky: {fileID: 0}
+  prefInky: {fileID: 6600358468908045464, guid: 0327307939cc5ae41a0a655eeedcb6e3,
+    type: 3}
   prefClyde: {fileID: 7385762064733513343, guid: 6008ccf84c3829d41bc1d2a4397fe05b,
     type: 3}
 --- !u!4 &848230277
@@ -250,7 +251,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1131147846}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 1, y: 1, z: -10}
+  m_LocalPosition: {x: 0, y: 0, z: -10}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
