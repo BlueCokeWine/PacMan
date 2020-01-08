@@ -10,25 +10,30 @@ public class Blinky : Ghost
 		gizmoColor = Color.red;
 	}
 
-	protected override void ActiveTracking()
+	protected override void UpdateActionDecision()
 	{
-		Vector2Int targetPlace = StageManager.Instance.Player.CurrentPlace;
+		Vector2Int targetPlace;
 
-		SetTargetPlace(targetPlace);
-	}
-
-	protected override void SetNextPlace()
-	{
-		CurrentPlace = Util.RoundToVectorInt((Vector2)transform.position);
-
-		waypointQueue.Clear();
-		ActiveTracking();
-
-		if (waypointQueue.Count > 0)
+		switch (currentState)
 		{
-			Vector2Int nextPlace = waypointQueue.Dequeue();
-			moveHandler.SetDestination(CurrentPlace, nextPlace);
-			UpdateAnimation(nextPlace);
+			case EState.Timid:
+				if (waypointQueue.Count == 0)
+				{
+					targetPlace = FindTimidRunPlace(new Direction(EDirX.Right, EDirY.Up));
+					SetTargetPlace(targetPlace);
+				}
+				break;
+			case EState.GoHome:
+				if (waypointQueue.Count == 0)
+				{
+					SetTargetPlace(homePlace);
+				}
+				break;
+			default:
+				targetPlace = StageManager.Instance.Player.CurrentPlace;
+				SetTargetPlace(targetPlace);
+				break;
 		}
 	}
+
 }

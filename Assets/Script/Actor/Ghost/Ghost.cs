@@ -2,6 +2,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Animations;
 
 [System.Serializable]
 public class Node
@@ -23,25 +24,36 @@ public class Node
 
 public abstract class Ghost : Actor
 {
-	public enum EStat
+	public enum EState
 	{
 		Normal,
 		Tracking,
-		Timid
+		Timid,
+		GoHome
 	}
 
 	const int StraightDistance = 10;
 	const int DiagonalDistance = 14;
+	const float TimidTimeLength = 10.0f;
+	const float TimidRunOutTime = 3.0f;
 	const string WallTileTag = "TileMap_Wall";
 
+	[SerializeField]
+	protected RuntimeAnimatorController defaultAnimatorController;
+	[SerializeField]
+	protected RuntimeAnimatorController timidAnimatorController;
+	[SerializeField]
+	protected AnimatorOverrideController eyeAnimatorController;
 	[SerializeField]
 	protected float moveSpeed;
 
 	protected MoveHandler moveHandler;
 	protected AnimationHandler animHandler;
 
-	protected EStat currentStat;
+	protected Ghost partner;
+	protected EState currentState;
 	protected Direction direction;
+	protected float timidTimer;
 
 	protected Vector2Int homePlace;
 	protected Vector2Int stageMin, stageMax;
@@ -53,18 +65,19 @@ public abstract class Ghost : Actor
 	List<Node> finalNodeList = new List<Node>();
 	List<Node> openList, closedList;
 
-	// Debug
 	protected Color gizmoColor;
 
-	public void Init(Vector2Int homePlace,Vector2Int stageMin, Vector2Int stageMax)
+	public void Init(Vector2Int homePlace, Vector2Int stageMin, Vector2Int stageMax, Ghost partner = null)
 	{
 		moveHandler = GetComponent<MoveHandler>();
 		animHandler = GetComponent<AnimationHandler>();
 		moveHandler.Init(moveSpeed, SetNextPlace);
 
+		this.partner = partner;
 		this.homePlace = homePlace;
 		this.stageMin = stageMin;
 		this.stageMax = stageMax;
+		currentState = EState.Normal;
 
 		SetPlace(homePlace);
 		SetNextPlace();
@@ -79,36 +92,180 @@ public abstract class Ghost : Actor
 	{
 		if (StageManager.Instance.ComparePlayer(other.gameObject))
 		{
-			if(currentStat == EStat.Timid)
+			switch (currentState)
 			{
-				// 집 으로
-			}
-			else
-			{
-				// 게임 오버
+				case EState.Timid:
+					SetState(EState.GoHome);
+					break;
+				case EState.GoHome:
+					break;
+				default:
+					Debug.Log("Game Over");
+					break;
 			}
 		}
+	}
+
+	public void SetStateToTimid()
+	{
+		currentState = EState.Timid;
+		SetAnimatorController(currentState);
+		UpdateActionDecision();
+	}
+
+	public void SetState(EState state)
+	{
+		switch (state)
+		{
+			case EState.Timid:
+				waypointQueue.Clear();
+				moveHandler.MoveSpeed = moveSpeed * 0.5f;
+				timidTimer = TimidTimeLength;
+				if (currentState != EState.Timid)
+				{
+					StartCoroutine(StartTimidTime());
+				}
+				break;
+			case EState.GoHome:
+				waypointQueue.Clear();
+				moveHandler.MoveSpeed = moveSpeed * 1.5f;
+				break;
+			default:
+				moveHandler.MoveSpeed = moveSpeed;
+				break;
+		}
+
+		currentState = state;
+		UpdateActionDecision();
+		SetAnimatorController(state);
 	}
 
 	protected void SetTargetPlace(Vector2Int targetPlace)
 	{
-		startPlace = CurrentPlace;
+		startPlace = Util.RoundToVectorInt((Vector2)transform.position);
 		this.targetPlace = targetPlace;
 
+		waypointQueue.Clear();
 		PathFinding();
 	}
 
-	protected abstract void SetNextPlace();
+	protected abstract void UpdateActionDecision();
 
-	protected abstract void ActiveTracking();
+	protected void SetNextPlace()
+	{
+		CurrentPlace = Util.RoundToVectorInt((Vector2)transform.position);
+
+		if (currentState == EState.GoHome && CurrentPlace == homePlace)
+		{
+			SetState(EState.Normal);
+		}
+		else
+		{
+			UpdateActionDecision();
+		}
+
+		if (waypointQueue.Count > 0)
+		{
+			Vector2Int nextPlace = waypointQueue.Dequeue();
+			moveHandler.SetDestination(CurrentPlace, nextPlace);
+			UpdateAnimation(nextPlace);
+		}
+	}
+
+
+	protected Vector2Int FindTimidRunPlace(Direction runDirection)
+	{
+		Vector2Int runPlace = new Vector2Int();
+		Vector2Int centerPlace = new Vector2Int();
+		centerPlace.x = (stageMin.x + stageMax.x) / 2;
+		centerPlace.y = (stageMin.y + stageMax.y) / 2;
+
+		do
+		{
+			switch (runDirection.X)
+			{
+				case EDirX.Right:
+					runPlace.x = UnityEngine.Random.Range(centerPlace.x, stageMax.x);
+					break;
+				case EDirX.Left:
+					runPlace.x = UnityEngine.Random.Range(stageMin.x, centerPlace.x);
+					break;
+				default:
+					runPlace.x = centerPlace.x;
+					break;
+			}
+
+			switch (runDirection.Y)
+			{
+				case EDirY.Up:
+					runPlace.y = UnityEngine.Random.Range(centerPlace.y, stageMax.y);
+					break;
+				case EDirY.Down:
+					runPlace.y = UnityEngine.Random.Range(stageMin.y, centerPlace.y);
+					break;
+				default:
+					runPlace.y = centerPlace.y;
+					break;
+			}
+
+			if (StageManager.Instance.CanMovePlace(runPlace))
+			{
+				break;
+			}
+
+		} while (true);
+
+		return runPlace;
+	}
+
+	IEnumerator StartTimidTime()
+	{
+		bool isRunOut = false;
+
+		while (timidTimer > 0.0f)
+		{
+			timidTimer -= Time.deltaTime;
+
+			if(!isRunOut && currentState == EState.Timid && timidTimer < TimidRunOutTime )
+			{
+				isRunOut = true;
+				animHandler.SetRunOutTimidTime(isRunOut);
+			}
+			yield return null;
+		}
+
+		if(currentState == EState.Timid)
+		{
+			SetState(EState.Normal);
+		}
+	}
+
+	#region Animation
+	protected void SetAnimatorController(EState state)
+	{
+		switch (state)
+		{
+			case EState.Normal:
+				animHandler.SetAnimator(defaultAnimatorController);
+				animHandler.SetDirection(direction);
+				break;
+			case EState.Timid:
+				animHandler.SetAnimator(timidAnimatorController);
+				break;
+			case EState.GoHome:
+				animHandler.SetAnimator(eyeAnimatorController);
+				animHandler.SetDirection(direction);
+				break;
+		}
+	}
 
 	protected void UpdateAnimation(Vector2 nextPlace)
 	{
-		if(nextPlace.x > CurrentPlace.x)
+		if (nextPlace.x > CurrentPlace.x)
 		{
 			direction.X = EDirX.Right;
 		}
-		else if(nextPlace.x < CurrentPlace.x)
+		else if (nextPlace.x < CurrentPlace.x)
 		{
 			direction.X = EDirX.Left;
 		}
@@ -117,11 +274,11 @@ public abstract class Ghost : Actor
 			direction.X = EDirX.None;
 		}
 
-		if(nextPlace.y > CurrentPlace.y)
+		if (nextPlace.y > CurrentPlace.y)
 		{
 			direction.Y = EDirY.Up;
 		}
-		else if(nextPlace.y < CurrentPlace.y)
+		else if (nextPlace.y < CurrentPlace.y)
 		{
 			direction.Y = EDirY.Down;
 		}
@@ -130,8 +287,12 @@ public abstract class Ghost : Actor
 			direction.Y = EDirY.None;
 		}
 
-		animHandler.SetDirection(direction);
+		if (currentState != EState.Timid)
+		{
+			animHandler.SetDirection(direction);
+		}
 	}
+	#endregion
 
 	#region A* Algorithm
 	void PathFinding()
@@ -151,7 +312,6 @@ public abstract class Ghost : Actor
 				nodeArray[i, j] = new Node(isWall, i + stageMin.x, j + stageMin.y);
 			}
 		}
-
 
 		// 시작과 끝 노드, 열린리스트와 닫힌리스트, 마지막리스트 초기화
 		startNode = nodeArray[startPlace.x - stageMin.x, startPlace.y - stageMin.y];

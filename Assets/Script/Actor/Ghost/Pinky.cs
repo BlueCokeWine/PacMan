@@ -14,38 +14,55 @@ public class Pinky : Ghost
 		gizmoColor.a = 1f;
 	}
 
-	protected override void ActiveTracking()
+	protected override void UpdateActionDecision()
 	{
-		switch (currentStat)
+		Vector2Int targetPlace;
+
+		switch (currentState)
 		{
-			case EStat.Normal:
-				PredictionTrack();
+			case EState.Normal:
+				targetPlace = FindPredictionPlace();
+				SetTargetPlace(targetPlace);
 
 				if (waypointQueue.Count < PredictionWeight)
 				{
-					currentStat = EStat.Tracking;
-					DirectTrack();
+					currentState = EState.Tracking;
+					targetPlace = StageManager.Instance.Player.CurrentPlace;
+					SetTargetPlace(targetPlace);
 				}
 				break;
-			case EStat.Tracking:
-				DirectTrack();
+			case EState.Tracking:
+				targetPlace = StageManager.Instance.Player.CurrentPlace;
+				SetTargetPlace(targetPlace);
 
 				if(waypointQueue.Count > PredictionWeight * 2)
 				{
-					currentStat = EStat.Normal;
-					PredictionTrack();
+					currentState = EState.Normal;
+					targetPlace = FindPredictionPlace();
+					SetTargetPlace(targetPlace);
 				}
 				break;
-			case EStat.Timid:
+			case EState.Timid:
+				if (waypointQueue.Count == 0)
+				{
+					targetPlace = FindTimidRunPlace(new Direction(EDirX.Left, EDirY.Up));
+					SetTargetPlace(targetPlace);
+				}
+				break;
+			case EState.GoHome:
+				if (waypointQueue.Count == 0)
+				{
+					SetTargetPlace(homePlace);
+				}
 				break;
 		}
 	}
 
-	void PredictionTrack()
+	Vector2Int FindPredictionPlace()
 	{
 		Vector2Int playerPlace = StageManager.Instance.Player.CurrentPlace;
 		Direction playerDirection = StageManager.Instance.Player.CurrentDir;
-		Vector2Int targetPlace = playerPlace;
+		Vector2Int predictionPlace = playerPlace;
 
 		for (int i = 1; i < PredictionWeight + 1; i++)
 		{
@@ -54,7 +71,7 @@ public class Pinky : Ghost
 			checkPlace.y += (int)playerDirection.Y * i;
 			if (StageManager.Instance.CanMovePlace(checkPlace))
 			{
-				targetPlace = checkPlace;
+				predictionPlace = checkPlace;
 			}
 			else
 			{
@@ -62,28 +79,7 @@ public class Pinky : Ghost
 			}
 		}
 
-		SetTargetPlace(targetPlace);
+		return predictionPlace;
 	}
 
-	void DirectTrack()
-	{
-		Vector2Int targetPlace = StageManager.Instance.Player.CurrentPlace;
-
-		SetTargetPlace(targetPlace);
-	}
-
-	protected override void SetNextPlace()
-	{
-		CurrentPlace = Util.RoundToVectorInt((Vector2)transform.position);
-
-		waypointQueue.Clear();
-		ActiveTracking();
-
-		if (waypointQueue.Count > 0)
-		{
-			Vector2Int nextPlace = waypointQueue.Dequeue();
-			moveHandler.SetDestination(CurrentPlace, nextPlace);
-			UpdateAnimation(nextPlace);
-		}
-	}
 }

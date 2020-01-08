@@ -9,40 +9,51 @@ public class Clyde : Ghost
 		gizmoColor = Color.yellow;
 	}
 
-	protected override void ActiveTracking()
+	protected override void UpdateActionDecision()
 	{
-		Vector2Int targetPlace = new Vector2Int();
+		if (!StageManager.Instance.CanMovePlace(CurrentPlace))
+		{
+			SetPlace(startPlace);
+		}
+
+		Vector2Int targetPlace;
+
+		if (waypointQueue.Count == 0)
+		{
+			switch (currentState)
+			{
+				case EState.Timid:
+					targetPlace = FindTimidRunPlace(new Direction(EDirX.Left, EDirY.Down));
+					SetTargetPlace(targetPlace);
+					break;
+				case EState.GoHome:
+					SetTargetPlace(homePlace);
+					break;
+				default:
+					targetPlace = FindRandomPlace();
+					SetTargetPlace(targetPlace);
+					break;
+			}
+		}
+	}
+
+	Vector2Int FindRandomPlace()
+	{
+		Vector2Int randomPlace = new Vector2Int();
 
 		do
 		{
-			targetPlace.x = Random.Range(stageMin.x, stageMax.x);
-			targetPlace.y = Random.Range(stageMin.y, stageMax.y);
+			randomPlace.x = Random.Range(stageMin.x, stageMax.x);
+			randomPlace.y = Random.Range(stageMin.y, stageMax.y);
 
-			if (StageManager.Instance.CanMovePlace(targetPlace))
+			if (StageManager.Instance.CanMovePlace(randomPlace))
 			{
 				break;
 			}
 
 		} while (true);
 
-		SetTargetPlace(targetPlace);
+		return randomPlace;
 	}
 
-	protected override void SetNextPlace()
-	{
-		CurrentPlace = Util.RoundToVectorInt((Vector2)transform.position);
-
-		if(waypointQueue.Count <= 1)
-		{
-			ActiveTracking();
-		}
-
-		if (waypointQueue.Count > 0)
-		{
-			Vector2Int nextPlace = waypointQueue.Dequeue();
-			moveHandler.SetDestination(CurrentPlace, nextPlace);
-			UpdateAnimation(nextPlace);
-		}
-		
-	}
 }
