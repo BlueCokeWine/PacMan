@@ -148,6 +148,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ed218d28eba7f8d4197655006813db49, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  defaultAnimatorController: {fileID: 22100000, guid: 59605752aeb5f864c87bd6b4927ff2ce,
+    type: 2}
+  timidAnimatorController: {fileID: 9100000, guid: e14b4c1d2eebbd34a91ceae67eaf7e9f,
+    type: 2}
+  eyeAnimatorController: {fileID: 22100000, guid: de02d64f08132b4439ec0ece087b438d,
+    type: 2}
   moveSpeed: 6
 --- !u!114 &1447043103798024692
 MonoBehaviour:
@@ -182,7 +188,7 @@ BoxCollider:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1447043103798024689}
   m_Material: {fileID: 0}
-  m_IsTrigger: 0
+  m_IsTrigger: 1
   m_Enabled: 1
   serializedVersion: 2
   m_Size: {x: 1, y: 1, z: 1}
