@@ -6,19 +6,14 @@ using UnityEngine.Tilemaps;
 
 public class Stage : MonoBehaviour
 {
-	[SerializeField]
-	Tilemap groundTilemap;
-	[SerializeField]
-	Tilemap foodTilemap;
-	[SerializeField]
-	Tilemap wallTilemap;
-	[SerializeField]
-	GameObject readyText;
+	[SerializeField] Tilemap groundTilemap;
+	[SerializeField] Tilemap foodTilemap;
+	[SerializeField] Tilemap wallTilemap;
+	[SerializeField] Animator wallAnimator;
+	[SerializeField] GameObject readyText;
 
-	[SerializeField]
-	Transform playerStartPlace;
-	[SerializeField]
-	List<Transform> ghostStartPlace;
+	[SerializeField] Transform playerStartPlace;
+	[SerializeField] List<Transform> ghostStartPlace;
 
 	public Vector2Int Min { get; private set; }
 	public Vector2Int Max { get; private set; }
@@ -71,6 +66,11 @@ public class Stage : MonoBehaviour
 	public void SetActiveReadyText(bool active)
 	{
 		readyText.SetActive(active);
+	}
+
+	public void SetActiveWallTwinkle(bool active)
+	{
+		wallAnimator.SetBool("ActiveTwinkle", active);
 	}
 
 }

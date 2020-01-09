@@ -52,7 +52,7 @@ public class PacMan : Actor
 		{
 			KeyInput();
 
-			if (CurrentDir != Direction.Empty)
+			if (CurrentDir != Direction.Empty && !StageManager.Instance.IsHighlightTime)
 			{
 				moveHandler.Move();
 			}

@@ -34,7 +34,7 @@ public abstract class Ghost : Actor
 
 	const int StraightDistance = 10;
 	const int DiagonalDistance = 14;
-	const float TimidTimeLength = 10.0f;
+	const float TimidTimeLength = 15.0f;
 	const string WallTileTag = "TileMap_Wall";
 
 	[SerializeField]
@@ -46,13 +46,14 @@ public abstract class Ghost : Actor
 	[SerializeField]
 	protected float moveSpeed;
 
-	protected MoveHandler moveHandler;
-	protected GhostAnimationHandler animHandler;
+	MoveHandler moveHandler;
+	GhostAnimationHandler animHandler;
 
 	protected Ghost partner;
 	protected EState currentState;
 	protected Direction direction;
-	protected float timidTimer;
+
+	float timidTimer;
 
 	protected Vector2Int homePlace;
 	protected Vector2Int stageMin, stageMax;
@@ -95,7 +96,10 @@ public abstract class Ghost : Actor
 	{
 		if(StageManager.Instance.GameState == StageManager.EState.Play)
 		{
-			moveHandler.Move();
+			if(!StageManager.Instance.IsHighlightTime || currentState == EState.GoHome)
+			{
+				moveHandler.Move();
+			}
 		}
 	}
 
@@ -107,6 +111,7 @@ public abstract class Ghost : Actor
 			{
 				case EState.Timid:
 					SetState(EState.GoHome);
+					StartCoroutine(StageManager.Instance.StartHighlightTime());
 					break;
 				case EState.GoHome:
 					break;
