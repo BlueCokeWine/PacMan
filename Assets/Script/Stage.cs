@@ -11,6 +11,8 @@ public class Stage : MonoBehaviour
 	Tilemap foodTilemap;
 	[SerializeField]
 	Tilemap wallTilemap;
+	[SerializeField]
+	GameObject readyText;
 
 	[SerializeField]
 	Transform playerStartPlace;
@@ -63,6 +65,11 @@ public class Stage : MonoBehaviour
 
 		}
 		return false;
+	}
+
+	public void SetActiveReadyText(bool active)
+	{
+		readyText.SetActive(active);
 	}
 
 }
