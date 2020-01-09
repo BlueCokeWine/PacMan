@@ -4,12 +4,12 @@ using UnityEngine;
 
 public class Blinky : Ghost
 {
-	// 플레이어의 뒤를 쫓음
 	private void Awake()
 	{
 		gizmoColor = Color.red;
 	}
 
+	// 플레이어의 뒤를 쫓음
 	protected override void UpdateActionDecision()
 	{
 		Vector2Int targetPlace;

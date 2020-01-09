@@ -35,7 +35,6 @@ public abstract class Ghost : Actor
 	const int StraightDistance = 10;
 	const int DiagonalDistance = 14;
 	const float TimidTimeLength = 10.0f;
-	const float TimidRunOutTime = 3.0f;
 	const string WallTileTag = "TileMap_Wall";
 
 	[SerializeField]

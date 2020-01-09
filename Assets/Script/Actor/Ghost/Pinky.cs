@@ -14,6 +14,7 @@ public class Pinky : Ghost
 		gizmoColor.a = 1f;
 	}
 
+	// 플레이어 앞 지를려고 함
 	protected override void UpdateActionDecision()
 	{
 		Vector2Int targetPlace;

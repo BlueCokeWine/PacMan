@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿#pragma warning disable CS0649
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -14,8 +15,8 @@ public class StageManager : Singleton<StageManager>
 		GameOver
 	}
 
-	const float PrepareTime = 5.0f;
-	const float WaitResetTime = 5.0f;
+	const float PrepareTime = 3.0f;
+	const float WaitResetTime = 3.0f;
 
 	[SerializeField]
 	GameObject debugStage;

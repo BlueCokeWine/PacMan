@@ -13,6 +13,7 @@ public class Inky : Ghost
 		gizmoColor = Color.cyan;
 	}
 
+	// 블링키와 플레이어의 대칭점으로 이동하려고 함
 	protected override void UpdateActionDecision()
 	{
 		Vector2Int targetPlace;

@@ -9,6 +9,7 @@ public class Clyde : Ghost
 		gizmoColor = Color.yellow;
 	}
 
+	// 랜덤 위치로 이동
 	protected override void UpdateActionDecision()
 	{
 		if (!StageManager.Instance.CanMovePlace(CurrentPlace))
