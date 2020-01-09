@@ -64,7 +64,7 @@ public struct Direction
 	}
 }
 
-public class Actor : MonoBehaviour
+public abstract class Actor : MonoBehaviour
 {
 	public Vector2Int CurrentPlace { get; protected set; }
 
@@ -76,5 +76,7 @@ public class Actor : MonoBehaviour
 		transform.position = position;
 		CurrentPlace = place;
 	}
+
+	public abstract void ResetData();
 
 }

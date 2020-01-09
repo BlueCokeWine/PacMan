@@ -3,19 +3,22 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class AnimationParam
+public partial class AnimationParam
 {
 	public const string DirX = "DirX";
 	public const string DirY = "DirY";
-
-	public const string RunOutTimidTime = "RunOutTimidTime";
 }
 
 public class AnimationHandler : MonoBehaviour
 {
 
 	[SerializeField]
-	Animator animator;
+	protected Animator animator;
+
+	public virtual void ResetParam()
+	{
+		SetDirection(new Direction(EDirX.None, EDirY.Up));
+	}
 
 	public void SetDirection(Direction direction)
 	{
@@ -30,9 +33,9 @@ public class AnimationHandler : MonoBehaviour
 		//animator.speed = 0.8f;
 	}
 
-	public void SetRunOutTimidTime(bool isRunOut)
+	public void ResumeAnimation()
 	{
-		animator.SetBool(AnimationParam.RunOutTimidTime, isRunOut);
+		animator.speed = 1.0f;
 	}
 
 	public void StopAnimation()

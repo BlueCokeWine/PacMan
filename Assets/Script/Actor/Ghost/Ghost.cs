@@ -48,7 +48,7 @@ public abstract class Ghost : Actor
 	protected float moveSpeed;
 
 	protected MoveHandler moveHandler;
-	protected AnimationHandler animHandler;
+	protected GhostAnimationHandler animHandler;
 
 	protected Ghost partner;
 	protected EState currentState;
@@ -70,7 +70,7 @@ public abstract class Ghost : Actor
 	public void Init(Vector2Int homePlace, Vector2Int stageMin, Vector2Int stageMax, Ghost partner = null)
 	{
 		moveHandler = GetComponent<MoveHandler>();
-		animHandler = GetComponent<AnimationHandler>();
+		animHandler = GetComponent<GhostAnimationHandler>();
 		moveHandler.Init(moveSpeed, SetNextPlace);
 
 		this.partner = partner;
@@ -83,9 +83,21 @@ public abstract class Ghost : Actor
 		SetNextPlace();
 	}
 
+	public override void ResetData()
+	{
+		animHandler.ResetParam();
+		moveHandler.SetDestination(homePlace, homePlace);
+		waypointQueue.Clear();
+		SetPlace(homePlace);
+		SetState(EState.Normal);
+	}
+
 	void Update()
 	{
-		moveHandler.Move();
+		if(StageManager.Instance.GameState == StageManager.EState.Play)
+		{
+			moveHandler.Move();
+		}
 	}
 
 	void OnTriggerEnter(Collider other)
@@ -100,17 +112,10 @@ public abstract class Ghost : Actor
 				case EState.GoHome:
 					break;
 				default:
-					Debug.Log("Game Over");
+					StageManager.Instance.SetGameState(StageManager.EState.PacManDie);
 					break;
 			}
 		}
-	}
-
-	public void SetStateToTimid()
-	{
-		currentState = EState.Timid;
-		SetAnimatorController(currentState);
-		UpdateActionDecision();
 	}
 
 	public void SetState(EState state)
@@ -118,12 +123,19 @@ public abstract class Ghost : Actor
 		switch (state)
 		{
 			case EState.Timid:
+				if(currentState == EState.GoHome)
+				{
+					return;
+				}
 				waypointQueue.Clear();
 				moveHandler.MoveSpeed = moveSpeed * 0.5f;
 				timidTimer = TimidTimeLength;
 				if (currentState != EState.Timid)
 				{
 					StartCoroutine(StartTimidTime());
+				} else
+				{
+					animHandler.SetRemainTimidTime(timidTimer);
 				}
 				break;
 			case EState.GoHome:
@@ -220,16 +232,14 @@ public abstract class Ghost : Actor
 
 	IEnumerator StartTimidTime()
 	{
-		bool isRunOut = false;
 
 		while (timidTimer > 0.0f)
 		{
 			timidTimer -= Time.deltaTime;
 
-			if(!isRunOut && currentState == EState.Timid && timidTimer < TimidRunOutTime )
+			if(currentState == EState.Timid)
 			{
-				isRunOut = true;
-				animHandler.SetRunOutTimidTime(isRunOut);
+				animHandler.SetRemainTimidTime(timidTimer);
 			}
 			yield return null;
 		}

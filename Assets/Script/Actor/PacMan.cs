@@ -9,7 +9,7 @@ public class PacMan : Actor
 
 	Camera mainCamera;
 	MoveHandler moveHandler;
-	AnimationHandler animHandler;
+	PacManAnimationHandler animHandler;
 
 	public Direction CurrentDir { get; private set; }
 	Direction reservDir;
@@ -20,7 +20,7 @@ public class PacMan : Actor
 		mainCamera = Camera.main;
 
 		moveHandler = GetComponent<MoveHandler>();
-		animHandler = GetComponent<AnimationHandler>();
+		animHandler = GetComponent<PacManAnimationHandler>();
 		moveHandler.Init(moveSpeed, SetNextPlace);
 
 		this.startPlace = startPlace;
@@ -30,13 +30,31 @@ public class PacMan : Actor
 		SetPlace(startPlace);
 	}
 
+	public override void ResetData()
+	{
+		CurrentDir = Direction.Empty;
+		reservDir = Direction.Empty;
+
+		animHandler.ResetParam();
+
+		SetPlace(startPlace);
+	}
+
+	public void Die()
+	{
+		animHandler.SetDie();
+	}
+
 	void Update()
 	{
-		KeyInput();
-
-		if(CurrentDir != Direction.Empty)
+		if (StageManager.Instance.GameState == StageManager.EState.Play)
 		{
-			moveHandler.Move();
+			KeyInput();
+
+			if (CurrentDir != Direction.Empty)
+			{
+				moveHandler.Move();
+			}
 		}
 
 		SyncCameraPosition();

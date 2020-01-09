@@ -11,7 +11,7 @@ GameObject:
   - component: {fileID: 6600358468908045471}
   - component: {fileID: 6600358468908045477}
   - component: {fileID: 6600358468908045469}
-  - component: {fileID: 6600358468908045466}
+  - component: {fileID: 6151561723346337589}
   - component: {fileID: 6600358468908045467}
   m_Layer: 0
   m_Name: Inky
@@ -66,7 +66,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 013d697099f8ae641b6033043e8fe19a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
---- !u!114 &6600358468908045466
+--- !u!114 &6151561723346337589
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -75,7 +75,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 6600358468908045464}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 6464e68bf99e42c47aa0d733f66bf67f, type: 3}
+  m_Script: {fileID: 11500000, guid: 43755cc5a859a5c4f9b8c48b259a6094, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   animator: {fileID: 6600358469807175456}

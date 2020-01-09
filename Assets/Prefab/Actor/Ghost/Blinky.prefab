@@ -112,7 +112,7 @@ GameObject:
   - component: {fileID: 1346698031506604941}
   - component: {fileID: 1346698031506604942}
   - component: {fileID: 1346698031506604943}
-  - component: {fileID: 1346698031506604936}
+  - component: {fileID: -3060431878083258136}
   - component: {fileID: 1346698031506604937}
   m_Layer: 0
   m_Name: Blinky
@@ -167,7 +167,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 013d697099f8ae641b6033043e8fe19a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
---- !u!114 &1346698031506604936
+--- !u!114 &-3060431878083258136
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -176,7 +176,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 1346698031506604938}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 6464e68bf99e42c47aa0d733f66bf67f, type: 3}
+  m_Script: {fileID: 11500000, guid: 43755cc5a859a5c4f9b8c48b259a6094, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   animator: {fileID: 1346698029653221426}
