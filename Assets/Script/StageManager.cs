@@ -49,7 +49,7 @@ public class StageManager : Singleton<StageManager>
 		GameState = EState.Prepare;
 
 		CreatePlayer();
-		CreateGhosts();
+		//CreateGhosts();
 
 		SetGameState(EState.Prepare);
 	}

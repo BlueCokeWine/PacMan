@@ -28,6 +28,10 @@ public class StageIOButton : Editor
 			generator.LoadStage();
 		}
 
+		if(GUILayout.Button("Create Warp Gate"))
+		{
+			generator.CreatePortal();
+		}
 	}
 
 }

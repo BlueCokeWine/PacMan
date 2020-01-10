@@ -6,6 +6,7 @@ using UnityEngine.Tilemaps;
 
 public class Stage : MonoBehaviour
 {
+	[SerializeField] Transform mazeGrid;
 	[SerializeField] Tilemap groundTilemap;
 	[SerializeField] Tilemap foodTilemap;
 	[SerializeField] Tilemap wallTilemap;
@@ -19,6 +20,9 @@ public class Stage : MonoBehaviour
 	public Vector2Int Max { get; private set; }
 	public Vector2Int Size { get; private set; }
 	
+	public Transform MazeGrid {
+		get { return mazeGrid; }
+	}
 	public Transform PlayerStartPlace {
 		get { return playerStartPlace; }
 	}

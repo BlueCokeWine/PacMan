@@ -42,4 +42,14 @@ public class MoveHandler : MonoBehaviour
 		destPlace = nextPlace;
 	}
 
+	public void Warp(Transform warpExit)
+	{
+		Vector2Int warpPlace = Util.RoundToVectorInt((Vector2)warpExit.position);
+
+		startPlace = warpPlace;
+		destPlace = warpPlace;
+
+		moveTime = 1.1f;
+	}
+
 }
