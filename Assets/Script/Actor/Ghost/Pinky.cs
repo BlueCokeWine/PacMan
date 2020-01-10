@@ -43,6 +43,12 @@ public class Pinky : Ghost
 					SetTargetPlace(targetPlace);
 				}
 				break;
+			case EState.Warp:
+				if (waypointQueue.Count == 0)
+				{
+					currentState = EState.Normal;
+				}
+				break;
 			case EState.Timid:
 				if (waypointQueue.Count == 0)
 				{

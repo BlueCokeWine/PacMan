@@ -28,6 +28,7 @@ public abstract class Ghost : Actor
 	{
 		Normal,
 		Tracking,
+		Warp,
 		Timid,
 		GoHome
 	}
@@ -163,6 +164,24 @@ public abstract class Ghost : Actor
 
 		waypointQueue.Clear();
 		PathFinding();
+
+		foreach(var child in waypointQueue)
+		{
+			if(child == CurrentPlace)
+			{
+				continue;
+			}
+
+			if (CheckGoToWarpGate(child, out Vector2Int warpPlace))
+			{
+				currentState = EState.Warp;
+				waypointQueue.Clear();
+				this.targetPlace = warpPlace;
+				PathFinding();
+				break;
+			}
+		}
+
 	}
 
 	protected abstract void UpdateActionDecision();
@@ -186,6 +205,21 @@ public abstract class Ghost : Actor
 			moveHandler.SetDestination(CurrentPlace, nextPlace);
 			UpdateAnimation(nextPlace);
 		}
+	}
+
+	protected bool CheckGoToWarpGate(Vector2Int checkPlace, out Vector2Int warpPlace)
+	{
+		foreach(var child in StageManager.Instance.WarpGateList)
+		{
+			if (child.IsInRange(checkPlace))
+			{
+				warpPlace = child.Place;
+				return true;
+			}
+			
+		}
+		warpPlace = new Vector2Int();
+		return false;
 	}
 
 
@@ -427,10 +461,7 @@ public abstract class Ghost : Actor
 				}
 			}
 		}
-		catch (Exception e)
-		{
-
-		}
+		catch { }
 	}
 #endif
 

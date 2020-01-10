@@ -34,6 +34,7 @@ public class StageManager : Singleton<StageManager>
 	public PacMan Player { get; private set; }
 	public List<Ghost> GhostList { get; private set; } = new List<Ghost>();
 	public List<Food> FoodList { get; set; } = new List<Food>();
+	public List<WarpTile> WarpGateList { get; set; } = new List<WarpTile>();
 
 	public bool IsHighlightTime { get; private set; }
 
@@ -49,7 +50,7 @@ public class StageManager : Singleton<StageManager>
 		GameState = EState.Prepare;
 
 		CreatePlayer();
-		//CreateGhosts();
+		CreateGhosts();
 
 		SetGameState(EState.Prepare);
 	}

@@ -7,7 +7,7 @@ public abstract class Food : MonoBehaviour
 
 	public bool IsEaten { get; protected set; } = false;
 
-	void Awake()
+	void Start()
 	{
 		StageManager.Instance.FoodList.Add(this);
 	}

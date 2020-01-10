@@ -16,6 +16,12 @@ public class Blinky : Ghost
 
 		switch (currentState)
 		{
+			case EState.Warp:
+				if(waypointQueue.Count == 0)
+				{
+					currentState = EState.Normal;
+				}
+				break;
 			case EState.Timid:
 				if (waypointQueue.Count == 0)
 				{

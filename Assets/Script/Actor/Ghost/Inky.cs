@@ -23,6 +23,12 @@ public class Inky : Ghost
 
 			switch (currentState)
 			{
+				case EState.Warp:
+					if (waypointQueue.Count == 0)
+					{
+						currentState = EState.Normal;
+					}
+					break;
 				case EState.Timid:
 					targetPlace = FindTimidRunPlace(new Direction(EDirX.Right, EDirY.Down));
 					SetTargetPlace(targetPlace);

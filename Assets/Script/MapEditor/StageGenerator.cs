@@ -12,8 +12,8 @@ using System;
 [ExecuteInEditMode]
 public class StageGenerator : MonoBehaviour
 {
-
 	[SerializeField] GameObject defaultStagePref;
+	[SerializeField] Sprite warpCoverSprite;
 	Stage currentStage;
 
 	public void CreateStage()
@@ -81,6 +81,7 @@ public class StageGenerator : MonoBehaviour
 		script.LinkDoorway(exit.transform);
 		warp.AddComponent<BoxCollider>();
 		warp.GetComponent<BoxCollider>().isTrigger = true;
+		warp.AddComponent<SpriteRenderer>().sprite = warpCoverSprite;
 
 		Texture2D tex = EditorGUIUtility.IconContent("sv_label_0").image as Texture2D;
 		Type editorGUIUtilityType = typeof(EditorGUIUtility);
