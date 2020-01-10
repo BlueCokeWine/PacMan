@@ -26,7 +26,10 @@ public class Inky : Ghost
 				case EState.Warp:
 					if (waypointQueue.Count == 0)
 					{
-						currentState = EState.Normal;
+						if (currentState != EState.Timid)
+						{
+							currentState = EState.Normal;
+						}
 					}
 					break;
 				case EState.Timid:

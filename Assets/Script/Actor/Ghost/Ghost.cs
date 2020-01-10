@@ -138,12 +138,10 @@ public abstract class Ghost : Actor
 				if (currentState != EState.Timid)
 				{
 					StartCoroutine(StartTimidTime());
-				} else
-				{
-					animHandler.SetRemainTimidTime(timidTimer);
 				}
 				break;
 			case EState.GoHome:
+				timidTimer = 0.0f;
 				waypointQueue.Clear();
 				moveHandler.MoveSpeed = moveSpeed * 1.5f;
 				break;
@@ -165,20 +163,23 @@ public abstract class Ghost : Actor
 		waypointQueue.Clear();
 		PathFinding();
 
-		foreach(var child in waypointQueue)
+		if(currentState == EState.Normal || currentState == EState.Tracking)
 		{
-			if(child == CurrentPlace)
+			foreach (var child in waypointQueue)
 			{
-				continue;
-			}
+				if (child == CurrentPlace)
+				{
+					continue;
+				}
 
-			if (CheckGoToWarpGate(child, out Vector2Int warpPlace))
-			{
-				currentState = EState.Warp;
-				waypointQueue.Clear();
-				this.targetPlace = warpPlace;
-				PathFinding();
-				break;
+				if (CheckGoToWarpGate(child, out Vector2Int warpPlace))
+				{
+					currentState = EState.Warp;
+					waypointQueue.Clear();
+					this.targetPlace = warpPlace;
+					PathFinding();
+					break;
+				}
 			}
 		}
 
@@ -275,14 +276,14 @@ public abstract class Ghost : Actor
 		{
 			timidTimer -= Time.deltaTime;
 
-			if(currentState == EState.Timid)
+			if (currentState == EState.Timid)
 			{
 				animHandler.SetRemainTimidTime(timidTimer);
 			}
 			yield return null;
 		}
 
-		if(currentState == EState.Timid)
+		if (currentState == EState.Timid)
 		{
 			SetState(EState.Normal);
 		}

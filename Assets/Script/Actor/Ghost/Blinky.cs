@@ -19,7 +19,9 @@ public class Blinky : Ghost
 			case EState.Warp:
 				if(waypointQueue.Count == 0)
 				{
-					currentState = EState.Normal;
+					if(currentState != EState.Timid) {
+						currentState = EState.Normal;
+					}
 				}
 				break;
 			case EState.Timid:
@@ -37,6 +39,8 @@ public class Blinky : Ghost
 				break;
 			default:
 				targetPlace = StageManager.Instance.Player.CurrentPlace;
+				targetPlace.x += (int)StageManager.Instance.Player.CurrentDir.X;
+				targetPlace.y += (int)StageManager.Instance.Player.CurrentDir.Y;
 				SetTargetPlace(targetPlace);
 				break;
 		}
