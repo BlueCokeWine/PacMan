@@ -14,7 +14,7 @@ public class StageGenerator : MonoBehaviour
 {
 	[SerializeField] GameObject defaultStagePref;
 	[SerializeField] Sprite warpCoverSprite;
-	Stage currentStage;
+	[SerializeField] Stage currentStage;
 
 	public void CreateStage()
 	{

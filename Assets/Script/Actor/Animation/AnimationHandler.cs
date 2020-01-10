@@ -28,8 +28,18 @@ public class AnimationHandler : MonoBehaviour
 			return;
 		}
 
-		animator.SetInteger(AnimationParam.DirX, (int)direction.X);
-		animator.SetInteger(AnimationParam.DirY, (int)direction.Y);
+		foreach (AnimatorControllerParameter param in animator.parameters)
+		{
+			if (param.name == AnimationParam.DirX)
+			{
+				animator.SetInteger(AnimationParam.DirX, (int)direction.X);
+			}
+
+			if(param.name == AnimationParam.DirY)
+			{
+				animator.SetInteger(AnimationParam.DirY, (int)direction.Y);
+			}
+		}
 		//animator.speed = 0.8f;
 	}
 

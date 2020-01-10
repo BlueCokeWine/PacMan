@@ -41,6 +41,7 @@ public class StageManager : Singleton<StageManager>
 	void Awake()
 	{
 		InitStage();
+		Camera.main.transform.position = CurrentStage.CameraPosition;
 	}
 
 	public void InitStage()

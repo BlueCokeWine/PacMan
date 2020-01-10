@@ -15,6 +15,7 @@ public class Stage : MonoBehaviour
 
 	[SerializeField] Transform playerStartPlace;
 	[SerializeField] List<Transform> ghostStartPlace;
+	[SerializeField] Vector3 cameraPosition;
 
 	public Vector2Int Min { get; private set; }
 	public Vector2Int Max { get; private set; }
@@ -28,6 +29,9 @@ public class Stage : MonoBehaviour
 	}
 	public List<Transform> GhostStartPlace {
 		get { return ghostStartPlace; }
+	}
+	public Vector3 CameraPosition {
+		get { return cameraPosition; }
 	}
 
 	void Awake()
