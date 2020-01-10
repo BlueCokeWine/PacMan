@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class PowerCookie : Food
 {
-	public const int Score = 200;
+	public const int Score = 50;
 
 	protected override void EatEvent()
 	{
