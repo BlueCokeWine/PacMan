@@ -150,8 +150,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   cameraEffect: {fileID: 1131147850}
-  debugStage: {fileID: 8021235199846366304, guid: 7f958e92219da134a9c094061cebf338,
-    type: 3}
   prefPacMan: {fileID: 5616831782477443947, guid: cee6c91e4a6ab9441b7602585f5c1cb8,
     type: 3}
   prefBlinky: {fileID: 1346698031506604938, guid: 8f55c4cafd491034f91014804a9ea8b5,
@@ -162,6 +160,9 @@ MonoBehaviour:
     type: 3}
   prefClyde: {fileID: 7385762064733513343, guid: 6008ccf84c3829d41bc1d2a4397fe05b,
     type: 3}
+  stageList:
+  - {fileID: 1328893647, guid: d8d3441c219e6c544944c3dd171976fe, type: 3}
+  - {fileID: 8021235199846366304, guid: 7f958e92219da134a9c094061cebf338, type: 3}
 --- !u!4 &848230277
 Transform:
   m_ObjectHideFlags: 0
