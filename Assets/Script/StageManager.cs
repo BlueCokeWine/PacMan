@@ -3,6 +3,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class StageManager : Singleton<StageManager>
 {
@@ -20,14 +21,17 @@ public class StageManager : Singleton<StageManager>
 	const float PrepareTime = 3.0f;
 	const float WaitResetTime = 3.0f;
 	const float HightlightTime = 1.0f;
+	const float StageOverWaitTime = 3.0f;
+	const float GoToNextStageWaitTime = 5.0f;
 
 	[SerializeField] CameraEffect cameraEffect;
-	[SerializeField] GameObject debugStage;
 	[SerializeField] GameObject prefPacMan;
 	[SerializeField] GameObject prefBlinky;
 	[SerializeField] GameObject prefPinky;
 	[SerializeField] GameObject prefInky;
 	[SerializeField] GameObject prefClyde;
+
+	[SerializeField] List<GameObject> stageList;
 
 	public EState GameState { get; private set; }
 	public Stage CurrentStage { get; private set; }
@@ -38,22 +42,48 @@ public class StageManager : Singleton<StageManager>
 
 	public bool IsHighlightTime { get; private set; }
 
+	int stageIndex = 0;
+
 	void Awake()
 	{
-		InitStage();
-		Camera.main.transform.position = CurrentStage.CameraPosition;
+		if (instance != null)
+		{
+			Destroy(gameObject);
+			return;
+		}
+
+		instance = this;
+		DontDestroyOnLoad(gameObject);
+		SceneManager.sceneLoaded += OnSceneLoaded;
+
+		
+
 	}
 
-	public void InitStage()
+	void OnSceneLoaded(Scene scene, LoadSceneMode mode)
 	{
-		CurrentStage = Instantiate(debugStage).GetComponent<Stage>();
+		if (scene.name == SceneName.StageSceneName)
+		{
+			if (stageIndex == stageList.Count)
+			{
+				stageIndex = 0;
+			}
+			CreateStage(stageList[stageIndex]);
+		}
+	}
 
-		GameState = EState.Prepare;
+	public void CreateStage(GameObject stagePref)
+	{
+		CurrentStage = Instantiate(stagePref).GetComponent<Stage>();
+
+		SetGameState(EState.Prepare);
 
 		CreatePlayer();
 		CreateGhosts();
 
-		SetGameState(EState.Prepare);
+		CameraEffect effect = Camera.main.GetComponent<CameraEffect>();
+		effect.TargetObject = Player.transform;
+		effect.SetOriginPosition(CurrentStage.CameraPosition);
 	}
 
 	void CreatePlayer()
@@ -85,7 +115,7 @@ public class StageManager : Singleton<StageManager>
 
 	public void CheckStageOver()
 	{
-		foreach(var child in FoodList)
+		foreach (var child in FoodList)
 		{
 			if (!child.IsEaten)
 			{
@@ -139,7 +169,7 @@ public class StageManager : Singleton<StageManager>
 
 	public bool ComparePlayer(GameObject gameObject)
 	{
-		if(Player.gameObject == gameObject)
+		if (Player.gameObject == gameObject)
 		{
 			return true;
 		}
@@ -180,7 +210,27 @@ public class StageManager : Singleton<StageManager>
 
 	IEnumerator CountDownStageOverTime()
 	{
-		float timer = 3.0f;
+		float timer = StageOverWaitTime;
+
+		while (timer > 0.0f)
+		{
+			timer -= Time.deltaTime;
+			yield return null;
+		}
+
+		foreach (var child in GhostList)
+		{
+			child.gameObject.SetActive(false);
+		}
+
+		CurrentStage.SetActiveWallTwinkle(true);
+
+		StartCoroutine(CountDownGoToNextStage());
+	}
+
+	IEnumerator CountDownGoToNextStage()
+	{
+		float timer = GoToNextStageWaitTime;
 
 		while(timer > 0.0f)
 		{
@@ -188,13 +238,8 @@ public class StageManager : Singleton<StageManager>
 			yield return null;
 		}
 
-		foreach(var child in GhostList)
-		{
-			child.gameObject.SetActive(false);
-		}
-
-		CurrentStage.SetActiveWallTwinkle(true);
-
+		stageIndex++;
+		SceneManager.LoadScene(SceneName.StageSceneName);
 	}
 
 	public IEnumerator StartHighlightTime()
@@ -203,7 +248,7 @@ public class StageManager : Singleton<StageManager>
 		IsHighlightTime = true;
 		cameraEffect.StartHighlightMode();
 
-		while(timer > 0.0f)
+		while (timer > 0.0f)
 		{
 			timer -= Time.deltaTime;
 			yield return null;
