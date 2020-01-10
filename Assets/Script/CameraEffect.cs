@@ -8,20 +8,11 @@ public class CameraEffect : MonoBehaviour
 	//you need to say how far from the object the camera will stop
 	const float MinimumDistanceFromTarget = 10.0f;
 
-	Transform target;
 	bool IsHighlightMode = false;
 
 	Vector3 originPosition;
 
-	void Awake()
-	{
-		originPosition = transform.position;
-	}
-
-	void Start()
-	{
-		target = StageManager.Instance.Player.transform;
-	}
+	public Transform TargetObject { get; set; }
 
 	// Update is called once per frame
 	void Update()
@@ -32,11 +23,17 @@ public class CameraEffect : MonoBehaviour
 		}
 	}
 
+	public void SetOriginPosition(Vector3 position)
+	{
+		originPosition = position;
+		transform.position = position;
+	}
+
 	public void MoveToWardsTarget()
 	{
-		if (Vector3.Distance(transform.position, target.position) > MinimumDistanceFromTarget) //we move only if we are further than the minimum distance
+		if (Vector3.Distance(transform.position, TargetObject.position) > MinimumDistanceFromTarget) //we move only if we are further than the minimum distance
 		{
-			transform.position = Vector3.MoveTowards(transform.position, target.position, MoveSpeed * Time.deltaTime);
+			transform.position = Vector3.MoveTowards(transform.position, TargetObject.position, MoveSpeed * Time.deltaTime);
 		}
 	}
 
