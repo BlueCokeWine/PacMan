@@ -5,7 +5,7 @@ using UnityEngine;
 using UnityEngine.SceneManagement;
 using TMPro;
 
-public class MenuUIManager : MonoBehaviour
+public class MenuUIManager : Singleton<MenuUIManager>
 {
 
     [SerializeField] TextMeshProUGUI highScoreText;
@@ -13,6 +13,7 @@ public class MenuUIManager : MonoBehaviour
 
     public Action PreStageIndexAction;
     public Action ProStageIndexAction;
+    public Action StartStageAction;
 
     void Awake()
     {
@@ -43,6 +44,7 @@ public class MenuUIManager : MonoBehaviour
 
     public void ButtonEvent_StartStage()
     {
+        StartStageAction?.Invoke();
         SceneManager.LoadScene(SceneName.StageSceneName);
     }
 

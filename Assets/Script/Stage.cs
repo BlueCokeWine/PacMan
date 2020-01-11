@@ -10,6 +10,7 @@ public class Stage : MonoBehaviour
 	[SerializeField] Tilemap groundTilemap;
 	[SerializeField] Tilemap foodTilemap;
 	[SerializeField] Tilemap wallTilemap;
+	[SerializeField] Tilemap doorTilemap;
 	[SerializeField] Animator wallAnimator;
 	[SerializeField] GameObject readyText;
 
@@ -70,9 +71,14 @@ public class Stage : MonoBehaviour
 		if (!wallTilemap.HasTile(checkPlace) && groundTilemap.HasTile(checkPlace))
 		{
 			return true;
-
 		}
 		return false;
+	}
+
+	public bool IsDoorTile(Vector2Int place)
+	{
+		Vector3Int checkPlace = new Vector3Int(place.x, place.y, 0);
+		return doorTilemap.HasTile(checkPlace);
 	}
 
 	public void SetActiveReadyText(bool active)
@@ -84,5 +90,6 @@ public class Stage : MonoBehaviour
 	{
 		wallAnimator.SetBool("ActiveTwinkle", active);
 	}
+
 
 }

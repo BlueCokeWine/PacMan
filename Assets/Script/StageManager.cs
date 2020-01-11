@@ -57,27 +57,32 @@ public class StageManager : Singleton<StageManager>
 		instance = this;
 		DontDestroyOnLoad(gameObject);
 		SceneManager.sceneLoaded += OnSceneLoaded;
-	}
-
-	public void StartNewGame()
-	{
-		lifeCount = StartLifeCount;
-		ScoreManager.ResetCurrentScore();
+		AddMenuFunction();
 	}
 
 	void OnSceneLoaded(Scene scene, LoadSceneMode mode)
 	{
-		if (scene.name == SceneName.StageSceneName)
+		StopAllCoroutines();
+		switch (scene.name)
 		{
-			if (stageIndex == stageList.Count)
-			{
+			case SceneName.MenuSceneName:
+				AddMenuFunction();
 				stageIndex = 0;
-			}
-			CreateStage(stageList[stageIndex]);
-			AddCheatFunction();
-
-			StageUIManager.Instance.SetLifeCount(lifeCount);
+				MenuUIManager.Instance.SetStageIndexText(stageIndex);
+				break;
+			case SceneName.StageSceneName:
+				CreateStage(stageList[stageIndex]);
+				AddCheatFunction();
+				StageUIManager.Instance.SetLifeCount(lifeCount);
+				break;
 		}
+	}
+
+	void AddMenuFunction()
+	{
+		MenuUIManager.Instance.ProStageIndexAction += IncreaseStageIndex;
+		MenuUIManager.Instance.PreStageIndexAction += DecreaseStageIndex;
+		MenuUIManager.Instance.StartStageAction += StartNewGame;
 	}
 
 	void AddCheatFunction()
@@ -112,25 +117,46 @@ public class StageManager : Singleton<StageManager>
 
 	void CreateGhosts()
 	{
-		
-
 		var ghostPlaceList = CurrentStage.GetGhostStartPlace();
 
-		var ghost1 = Instantiate(prefBlinky).GetComponent<Blinky>();
-		ghost1.Init(ghostPlaceList[0], CurrentStage.Min, CurrentStage.Max);
-		GhostList.Add(ghost1);
+		//var ghost1 = Instantiate(prefBlinky).GetComponent<Blinky>();
+		//ghost1.Init(ghostPlaceList[0], CurrentStage.Min, CurrentStage.Max);
+		//GhostList.Add(ghost1);
 
-		var ghost2 = Instantiate(prefPinky).GetComponent<Pinky>();
-		ghost2.Init(ghostPlaceList[1], CurrentStage.Min, CurrentStage.Max);
-		GhostList.Add(ghost2);
+		//var ghost2 = Instantiate(prefPinky).GetComponent<Pinky>();
+		//ghost2.Init(ghostPlaceList[1], CurrentStage.Min, CurrentStage.Max);
+		//GhostList.Add(ghost2);
 
-		var ghost3 = Instantiate(prefInky).GetComponent<Inky>();
-		ghost3.Init(ghostPlaceList[2], CurrentStage.Min, CurrentStage.Max);
-		GhostList.Add(ghost3);
+		//var ghost3 = Instantiate(prefInky).GetComponent<Inky>();
+		//ghost3.Init(ghostPlaceList[2], CurrentStage.Min, CurrentStage.Max);
+		//GhostList.Add(ghost3);
 
-		var ghost4 = Instantiate(prefClyde).GetComponent<Clyde>();
-		ghost4.Init(ghostPlaceList[3], CurrentStage.Min, CurrentStage.Max);
-		GhostList.Add(ghost4);
+		//var ghost4 = Instantiate(prefClyde).GetComponent<Clyde>();
+		//ghost4.Init(ghostPlaceList[3], CurrentStage.Min, CurrentStage.Max);
+		//GhostList.Add(ghost4);
+
+		for(int i = 0; i < ghostPlaceList.Count; i++)
+		{
+			Ghost ghost;
+			switch(i % 4)
+			{
+				case 1:
+					ghost = Instantiate(prefPinky).GetComponent<Pinky>();
+					break;
+				case 2:
+					ghost = Instantiate(prefInky).GetComponent<Inky>();
+					break;
+				case 3:
+					ghost = Instantiate(prefClyde).GetComponent<Clyde>();
+					break;
+				default:
+					ghost = Instantiate(prefBlinky).GetComponent<Blinky>();
+					break;
+			}
+			ghost.Init(ghostPlaceList[i], CurrentStage.Min, CurrentStage.Max);
+			GhostList.Add(ghost);
+		}
+
 	}
 
 	public void MovePlayer(EDirX x, EDirY y)
@@ -177,6 +203,7 @@ public class StageManager : Singleton<StageManager>
 			case EState.PacManDie:
 				Player.Die();
 				lifeCount--;
+				StageUIManager.Instance.SetLifeCount(lifeCount);
 				StartCoroutine(CountDownResetTime());
 				break;
 			case EState.GameOver:
@@ -204,6 +231,42 @@ public class StageManager : Singleton<StageManager>
 	{
 		return CurrentStage.CanMove(place);
 	}
+
+	public bool IsDoorPlace(Vector2Int place)
+	{
+		return CurrentStage.IsDoorTile(place);
+	}
+
+	#region UI Func
+	void IncreaseStageIndex()
+	{
+		stageIndex++;
+
+		if(stageIndex == stageList.Count)
+		{
+			stageIndex = 0;
+		}
+
+		MenuUIManager.Instance.SetStageIndexText(stageIndex);
+	}
+
+	void DecreaseStageIndex()
+	{
+		stageIndex--;
+		if(stageIndex < 0)
+		{
+			stageIndex = stageList.Count - 1;
+		}
+
+		MenuUIManager.Instance.SetStageIndexText(stageIndex);
+	}
+
+	void StartNewGame()
+	{
+		lifeCount = StartLifeCount;
+		ScoreManager.ResetCurrentScore();
+	}
+	#endregion
 
 	#region Cheat Func
 	void InstantWin()
@@ -290,6 +353,12 @@ public class StageManager : Singleton<StageManager>
 		}
 
 		stageIndex++;
+
+		if (stageIndex == stageList.Count)
+		{
+			stageIndex = 0;
+		}
+
 		SceneManager.LoadScene(SceneName.StageSceneName);
 	}
 

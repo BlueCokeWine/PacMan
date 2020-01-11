@@ -128,7 +128,7 @@ public class PacMan : Actor
 		tempPlace.x += (int)dir.X;
 		tempPlace.y += (int)dir.Y;
 
-		if (StageManager.Instance.CanMovePlace(tempPlace))
+		if (StageManager.Instance.CanMovePlace(tempPlace) && !StageManager.Instance.IsDoorPlace(tempPlace))
 		{
 			nextPlace = tempPlace;
 			return true;

@@ -100,6 +100,7 @@ public class StageUIManager : Singleton<StageUIManager>
 
 	public void ButtonEvent_Menu_ExitStage()
 	{
+		Time.timeScale = 1.0f;
 		SceneManager.LoadScene(SceneName.MenuSceneName);
 	}
 
