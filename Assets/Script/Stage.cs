@@ -15,7 +15,8 @@ public class Stage : MonoBehaviour
 
 	[SerializeField] Transform playerStartPlace;
 	[SerializeField] List<Transform> ghostStartPlace;
-	[SerializeField] Vector3 cameraPosition;
+	[SerializeField] Vector3 minimapCameraPosition;
+	[SerializeField] float minimapCameraSize;
 
 	public Vector2Int Min { get; private set; }
 	public Vector2Int Max { get; private set; }
@@ -30,8 +31,11 @@ public class Stage : MonoBehaviour
 	public List<Transform> GhostStartPlace {
 		get { return ghostStartPlace; }
 	}
-	public Vector3 CameraPosition {
-		get { return cameraPosition; }
+	public Vector3 MinimapCameraPosition {
+		get { return minimapCameraPosition; }
+	}
+	public float MinimapCameraSize {
+		get { return minimapCameraSize; }
 	}
 
 	void Awake()

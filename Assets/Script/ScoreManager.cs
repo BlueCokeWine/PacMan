@@ -2,35 +2,90 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class ScoreManager
+public class ScoreManager : Singleton<ScoreManager>
 {
 
-	#region Singleton
-	private static ScoreManager instance;
+	const string HighScoreSaveName = "HighScore";
+	const string CurrentScoreSaveName = "CurrentScore";
 
-	public static ScoreManager Instance {
-		get {
-			if (instance == null)
+	int addScore;
+	int currentScore;
+	int highScore;
+
+	void Awake()
+	{
+		highScore = PlayerPrefs.GetInt(HighScoreSaveName, 0);
+		currentScore = PlayerPrefs.GetInt(CurrentScoreSaveName, 0);
+	}
+
+	void Start()
+	{
+		StageUIManager.Instance.SetHighScoreText(highScore);
+		StageUIManager.Instance.SetCurrentScore(currentScore);
+	}
+
+	void Update()
+	{
+		if (addScore > 0f)
+		{
+			if (addScore > 100)
 			{
-				instance = new ScoreManager();
+				addScore -= 100;
+				currentScore += 100;
 			}
-			return instance;
+
+			if (addScore > 10)
+			{
+				addScore -= 10;
+				currentScore += 10;
+			}
+
+			if (addScore > 0)
+			{
+				addScore--;
+				currentScore++;
+			}
+
+			if(addScore <= 0)
+			{
+				UpdateHighScore();
+			}
+
+			StageUIManager.Instance.SetCurrentScore(Mathf.RoundToInt(currentScore));
 		}
 	}
 
-
-	#endregion
-
-	private ScoreManager()
+	public void SaveCurrentScore()
 	{
-		Score = 0;
+		PlayerPrefs.SetInt(CurrentScoreSaveName, currentScore);
 	}
 
-	public int Score { get; private set; }
-
-	public void AddFoodScore(int score)
+	public static void ResetCurrentScore()
 	{
-		Score += score;
+		PlayerPrefs.DeleteKey(CurrentScoreSaveName);
+	}
+
+	public static int GetHighScore()
+	{
+		int highScore = PlayerPrefs.GetInt(HighScoreSaveName, 0);
+		return highScore;
+	}
+
+	public void AddScore(int score)
+	{
+		addScore += score;
+	}
+
+	void UpdateHighScore()
+	{
+		if (currentScore < highScore)
+		{
+			return;
+		}
+
+		highScore = currentScore;
+		StageUIManager.Instance.SetHighScoreText(highScore);
+		PlayerPrefs.SetInt(HighScoreSaveName, highScore);
 	}
 
 }

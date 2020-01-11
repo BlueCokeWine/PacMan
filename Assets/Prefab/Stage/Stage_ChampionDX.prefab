@@ -1063,7 +1063,7 @@ GameObject:
   - component: {fileID: 1045546177261920811}
   - component: {fileID: 3652962682922325984}
   - component: {fileID: 3421144525693845679}
-  m_Layer: 0
+  m_Layer: 5
   m_Name: TextMP_Ready
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1171,8 +1171,8 @@ MonoBehaviour:
   m_fontMaterials: []
   m_fontColor32:
     serializedVersion: 2
-    rgba: 4294967295
-  m_fontColor: {r: 1, g: 1, b: 1, a: 1}
+    rgba: 4278255615
+  m_fontColor: {r: 1, g: 1, b: 0, a: 1}
   m_enableVertexGradient: 0
   m_colorMode: 3
   m_fontColorGradient:
@@ -14627,7 +14627,7 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 8021235199846366304}
-  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
@@ -14659,4 +14659,5 @@ MonoBehaviour:
   - {fileID: 6535153093697870998}
   - {fileID: 7509690475378715279}
   - {fileID: 8388667847609714086}
-  cameraPosition: {x: 17, y: 10, z: -12.5}
+  minimapCameraPosition: {x: 20, y: 10, z: -10}
+  minimapCameraSize: 17.5

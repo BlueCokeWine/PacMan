@@ -50,62 +50,52 @@ public class PacMan : Actor
 	{
 		if (StageManager.Instance.GameState == StageManager.EState.Play)
 		{
-			KeyInput();
+			KeyBoardInput();
 
 			if (CurrentDir != Direction.Empty && !StageManager.Instance.IsHighlightTime)
 			{
 				moveHandler.Move();
 			}
 		}
-
-		//SyncCameraPosition();
 	}
 
-	void KeyInput()
-	{
-		MoveKeyInput();
-	}
-
-	void MoveKeyInput()
+	void KeyBoardInput()
 	{
 		if (Input.GetKeyDown(KeyCode.UpArrow))
 		{
-			reservDir.X = EDirX.None;
-			reservDir.Y = EDirY.Up;
+			SetReservDirection(EDirX.None, EDirY.Up);
 		}
-
-		if (Input.GetKeyDown(KeyCode.DownArrow))
+		else if (Input.GetKeyDown(KeyCode.DownArrow))
 		{
-			reservDir.X = EDirX.None;
-			reservDir.Y = EDirY.Down;
+			SetReservDirection(EDirX.None, EDirY.Down);
 		}
-
-		if (Input.GetKeyDown(KeyCode.RightArrow))
+		else if (Input.GetKeyDown(KeyCode.RightArrow))
 		{
-			reservDir.X = EDirX.Right;
-			reservDir.Y = EDirY.None;
+			SetReservDirection(EDirX.Right, EDirY.None);
 		}
-
-		if (Input.GetKeyDown(KeyCode.LeftArrow))
+		else if (Input.GetKeyDown(KeyCode.LeftArrow))
 		{
-			reservDir.X = EDirX.Left;
-			reservDir.Y = EDirY.None;
-		}
-
-		if(CurrentDir == Direction.Empty && reservDir != Direction.Empty)
-		{
-			SetNextPlace();
+			SetReservDirection(EDirX.Left, EDirY.None);
 		}
 	}
 
-	void SyncCameraPosition()
+	public void JoyStickInput(EDirX x, EDirY y)
 	{
-		Vector3 position = mainCamera.transform.position;
+		if (StageManager.Instance.GameState == StageManager.EState.Play)
+		{
+			SetReservDirection(x, y);
+		}
+	}
 
-		position.x = transform.position.x;
-		position.y = transform.position.y;
+	void SetReservDirection(EDirX x, EDirY y)
+	{
+		reservDir.X = x;
+		reservDir.Y = y;
 
-		mainCamera.transform.position = position;
+		if (CurrentDir == Direction.Empty && reservDir != Direction.Empty)
+		{
+			SetNextPlace();
+		}
 	}
 
 	void SetNextPlace()

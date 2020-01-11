@@ -4,10 +4,10 @@ using UnityEngine;
 
 public class Cookie : Food
 {
-	public const int Score = 100;
+	public const int Score = 10;
 
 	protected override void EatEvent()
 	{
-		ScoreManager.Instance.AddFoodScore(Score);
+		ScoreManager.Instance.AddScore(Score);
 	}
 }

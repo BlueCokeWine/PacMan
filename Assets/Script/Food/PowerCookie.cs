@@ -15,7 +15,7 @@ public class PowerCookie : Food
 			child.SetState(Ghost.EState.Timid);
 		}
 
-		ScoreManager.Instance.AddFoodScore(Score);
+		ScoreManager.Instance.AddScore(Score);
 	}
 
 }

@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class CameraEffect : MonoBehaviour
+public class CameraZoom : MonoBehaviour
 {
 	const float MoveSpeed = 20.0f;
 	//you need to say how far from the object the camera will stop

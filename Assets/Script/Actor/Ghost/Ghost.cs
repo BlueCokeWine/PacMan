@@ -125,6 +125,11 @@ public abstract class Ghost : Actor
 
 	public void SetState(EState state)
 	{
+		if (!gameObject.activeInHierarchy)
+		{
+			return;
+		}
+
 		switch (state)
 		{
 			case EState.Timid:

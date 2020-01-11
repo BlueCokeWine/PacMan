@@ -5152,7 +5152,8 @@ MonoBehaviour:
   - {fileID: 1875373658}
   - {fileID: 706030292}
   - {fileID: 898200557}
-  cameraPosition: {x: 13.5, y: 14.9, z: -15.5}
+  minimapCameraPosition: {x: 14, y: 15, z: -10}
+  minimapCameraSize: 18.5
 --- !u!1 &1491070598
 GameObject:
   m_ObjectHideFlags: 0
@@ -15278,7 +15279,7 @@ GameObject:
   - component: {fileID: 5636260272321745453}
   - component: {fileID: 5636260272321745450}
   - component: {fileID: 5636260272321745451}
-  m_Layer: 0
+  m_Layer: 5
   m_Name: TextMP_Ready
   m_TagString: Untagged
   m_Icon: {fileID: 0}

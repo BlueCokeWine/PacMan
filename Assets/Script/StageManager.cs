@@ -23,8 +23,9 @@ public class StageManager : Singleton<StageManager>
 	const float HightlightTime = 1.0f;
 	const float StageOverWaitTime = 3.0f;
 	const float GoToNextStageWaitTime = 5.0f;
+	const float GameOverWaitTime = 4.0f;
+	const int StartLifeCount = 5;
 
-	[SerializeField] CameraEffect cameraEffect;
 	[SerializeField] GameObject prefPacMan;
 	[SerializeField] GameObject prefBlinky;
 	[SerializeField] GameObject prefPinky;
@@ -43,6 +44,7 @@ public class StageManager : Singleton<StageManager>
 	public bool IsHighlightTime { get; private set; }
 
 	int stageIndex = 0;
+	int lifeCount;
 
 	void Awake()
 	{
@@ -55,9 +57,12 @@ public class StageManager : Singleton<StageManager>
 		instance = this;
 		DontDestroyOnLoad(gameObject);
 		SceneManager.sceneLoaded += OnSceneLoaded;
+	}
 
-		
-
+	public void StartNewGame()
+	{
+		lifeCount = StartLifeCount;
+		ScoreManager.ResetCurrentScore();
 	}
 
 	void OnSceneLoaded(Scene scene, LoadSceneMode mode)
@@ -69,11 +74,25 @@ public class StageManager : Singleton<StageManager>
 				stageIndex = 0;
 			}
 			CreateStage(stageList[stageIndex]);
+			AddCheatFunction();
+
+			StageUIManager.Instance.SetLifeCount(lifeCount);
 		}
+	}
+
+	void AddCheatFunction()
+	{
+		StageUIManager.Instance.InstantWinAction += InstantWin;
+		StageUIManager.Instance.ToggleGhostAction += ToggleGhost;
+		StageUIManager.Instance.AddLifeAction += AddLife;
 	}
 
 	public void CreateStage(GameObject stagePref)
 	{
+		GhostList.Clear();
+		FoodList.Clear();
+		WarpGateList.Clear();
+
 		CurrentStage = Instantiate(stagePref).GetComponent<Stage>();
 
 		SetGameState(EState.Prepare);
@@ -81,9 +100,8 @@ public class StageManager : Singleton<StageManager>
 		CreatePlayer();
 		CreateGhosts();
 
-		CameraEffect effect = Camera.main.GetComponent<CameraEffect>();
-		effect.TargetObject = Player.transform;
-		effect.SetOriginPosition(CurrentStage.CameraPosition);
+		CameraManager.Instance.SetMainCamera(Player);
+		CameraManager.Instance.SetMinimapCamera(CurrentStage);
 	}
 
 	void CreatePlayer()
@@ -94,6 +112,8 @@ public class StageManager : Singleton<StageManager>
 
 	void CreateGhosts()
 	{
+		
+
 		var ghostPlaceList = CurrentStage.GetGhostStartPlace();
 
 		var ghost1 = Instantiate(prefBlinky).GetComponent<Blinky>();
@@ -113,6 +133,11 @@ public class StageManager : Singleton<StageManager>
 		GhostList.Add(ghost4);
 	}
 
+	public void MovePlayer(EDirX x, EDirY y)
+	{
+		Player?.JoyStickInput(x, y);
+	}
+
 	public void CheckStageOver()
 	{
 		foreach (var child in FoodList)
@@ -124,11 +149,6 @@ public class StageManager : Singleton<StageManager>
 		}
 
 		SetGameState(EState.StageOver);
-	}
-
-	public void CheckGameOver()
-	{
-
 	}
 
 	public void SetGameState(EState state)
@@ -156,12 +176,15 @@ public class StageManager : Singleton<StageManager>
 				break;
 			case EState.PacManDie:
 				Player.Die();
+				lifeCount--;
 				StartCoroutine(CountDownResetTime());
 				break;
 			case EState.GameOver:
+				StartCoroutine(StartGameOverAnimation());
 				break;
 			case EState.StageOver:
 				StartCoroutine(CountDownStageOverTime());
+				ScoreManager.Instance.SaveCurrentScore();
 				break;
 		}
 
@@ -181,6 +204,28 @@ public class StageManager : Singleton<StageManager>
 	{
 		return CurrentStage.CanMove(place);
 	}
+
+	#region Cheat Func
+	void InstantWin()
+	{
+		SetGameState(EState.StageOver);
+	}
+
+	void ToggleGhost()
+	{
+		foreach(var child in GhostList)
+		{
+			bool isActive = child.gameObject.activeInHierarchy;
+			child.gameObject.SetActive(!isActive);
+		}
+	}
+
+	void AddLife()
+	{
+		lifeCount++;
+		StageUIManager.Instance.SetLifeCount(lifeCount);
+	}
+	#endregion
 
 	IEnumerator CountDownPrepareTime()
 	{
@@ -205,7 +250,13 @@ public class StageManager : Singleton<StageManager>
 			yield return null;
 		}
 
-		SetGameState(EState.Reset);
+		if(lifeCount < 0)
+		{
+			SetGameState(EState.GameOver);
+		} else
+		{
+			SetGameState(EState.Reset);
+		}
 	}
 
 	IEnumerator CountDownStageOverTime()
@@ -242,11 +293,10 @@ public class StageManager : Singleton<StageManager>
 		SceneManager.LoadScene(SceneName.StageSceneName);
 	}
 
-	public IEnumerator StartHighlightTime()
+	IEnumerator StartGameOverAnimation()
 	{
-		float timer = HightlightTime;
-		IsHighlightTime = true;
-		cameraEffect.StartHighlightMode();
+		float timer = GameOverWaitTime;
+		StageUIManager.Instance.StartGameOverAnimation();
 
 		while (timer > 0.0f)
 		{
@@ -254,7 +304,23 @@ public class StageManager : Singleton<StageManager>
 			yield return null;
 		}
 
-		cameraEffect.EndHighlightMode();
+		SceneManager.LoadScene(SceneName.MenuSceneName);
+	}
+
+	public IEnumerator StartHighlightTime()
+	{
+		float timer = HightlightTime;
+		IsHighlightTime = true;
+		CameraManager.Instance.CameraShaking(0.1f);
+		//cameraEffect.StartHighlightMode();
+
+		while (timer > 0.0f)
+		{
+			timer -= Time.deltaTime;
+			yield return null;
+		}
+
+		//cameraEffect.EndHighlightMode();
 		IsHighlightTime = false;
 	}
 
