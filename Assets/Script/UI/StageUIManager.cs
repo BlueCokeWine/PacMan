@@ -83,6 +83,8 @@ public class StageUIManager : Singleton<StageUIManager>
 	#region Button Event
 	public void ButtonEvent_Game_PauseGame()
 	{
+		AudioManager.Instance.PlaySound(ESfxId.Click);
+		AudioManager.Instance.PlayGhostSound(false);
 		ActivePanel(EPanel.Pause);
 		Time.timeScale = 0.0f;
 	}
@@ -91,10 +93,13 @@ public class StageUIManager : Singleton<StageUIManager>
 	{
 		ActivePanel(EPanel.None);
 		Time.timeScale = 1.0f;
+		AudioManager.Instance.PlaySound(ESfxId.Click);
+		AudioManager.Instance.PlayGhostSound(true);
 	}
 
 	public void ButtonEvent_Menu_OpenCheatMenu()
 	{
+		AudioManager.Instance.PlaySound(ESfxId.Click);
 		ActivePanel(EPanel.Cheat);
 	}
 
@@ -102,6 +107,8 @@ public class StageUIManager : Singleton<StageUIManager>
 	{
 		Time.timeScale = 1.0f;
 		SceneManager.LoadScene(SceneName.MenuSceneName);
+		AudioManager.Instance.PlaySound(ESfxId.Click);
+		AudioManager.Instance.StopBgm();
 	}
 
 	public void ButtonEvent_Cheat_InstantWin()
@@ -109,20 +116,24 @@ public class StageUIManager : Singleton<StageUIManager>
 		Time.timeScale = 1.0f;
 		ActivePanel(EPanel.None);
 		InstantWinAction?.Invoke();
+		AudioManager.Instance.PlaySound(ESfxId.Click);
 	}
 
 	public void ButtonEvent_Cheat_ToggleGhost()
 	{
+		AudioManager.Instance.PlaySound(ESfxId.Click);
 		ToggleGhostAction?.Invoke();
 	}
 
 	public void ButtonEvent_Cheat_AddLife()
 	{
+		AudioManager.Instance.PlaySound(ESfxId.Click);
 		AddLifeAction?.Invoke();
 	}
 
 	public void ButtonEvent_Cheat_OK()
 	{
+		AudioManager.Instance.PlaySound(ESfxId.Click);
 		ActivePanel(EPanel.Pause);
 	}
 	#endregion

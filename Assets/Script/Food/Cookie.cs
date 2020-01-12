@@ -9,5 +9,6 @@ public class Cookie : Food
 	protected override void EatEvent()
 	{
 		ScoreManager.Instance.AddScore(Score);
+		AudioManager.Instance.PlayEatCookieSound();
 	}
 }

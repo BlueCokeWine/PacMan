@@ -36,7 +36,7 @@ public abstract class Ghost : Actor
 	const int StraightDistance = 10;
 	const int DiagonalDistance = 14;
 	const int StartTimidScore = 200;
-	const float TimidTimeLength = 15.0f;
+	const float TimidTimeLength = 10.0f;
 	const string WallTileTag = "TileMap_Wall";
 
 	[SerializeField]
@@ -115,6 +115,7 @@ public abstract class Ghost : Actor
 				case EState.Timid:
 					SetState(EState.GoHome);
 					ScoreManager.Instance.AddScore(timidScore, Score.EType.Ghost, transform.position);
+					AudioManager.Instance.PlaySound(ESfxId.EatGhost);
 					timidScore *= 2;
 					StartCoroutine(StageManager.Instance.StartHighlightTime());
 					break;
@@ -122,6 +123,8 @@ public abstract class Ghost : Actor
 					break;
 				default:
 					StageManager.Instance.SetGameState(StageManager.EState.PacManDie);
+					AudioManager.Instance.PlayGhostSound(false);
+					AudioManager.Instance.PlaySound(ESfxId.Death);
 					break;
 			}
 		}
@@ -151,11 +154,13 @@ public abstract class Ghost : Actor
 				}
 				break;
 			case EState.GoHome:
+				AudioManager.Instance.SetGhostSoundClip(ESfxId.GhostRetreat);
 				timidTimer = 0.0f;
 				waypointQueue.Clear();
 				moveHandler.MoveSpeed = moveSpeed * 1.5f;
 				break;
 			default:
+				AudioManager.Instance.SetGhostSoundClip(ESfxId.GhostSiren);
 				moveHandler.MoveSpeed = moveSpeed;
 				break;
 		}

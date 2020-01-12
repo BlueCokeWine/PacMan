@@ -36,21 +36,25 @@ public class MenuUIManager : Singleton<MenuUIManager>
     public void ButtonEvent_PreStageIndex()
     {
         PreStageIndexAction?.Invoke();
+        AudioManager.Instance.PlaySound(ESfxId.Click);
     }
 
     public void ButtonEvent_ProStageIndex()
     {
         ProStageIndexAction?.Invoke();
+        AudioManager.Instance.PlaySound(ESfxId.Click);
     }
 
     public void ButtonEvent_StartStage()
     {
+        AudioManager.Instance.PlaySound(ESfxId.Click);
         StartStageAction?.Invoke();
         SceneManager.LoadScene(SceneName.StageSceneName);
     }
 
     public void ButtonEvent_ExitProgram()
     {
+        AudioManager.Instance.PlaySound(ESfxId.Click);
         Application.Quit();
     }
     

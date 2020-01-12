@@ -18,11 +18,11 @@ public class StageManager : Singleton<StageManager>
 		StageOver
 	}
 
-	const float PrepareTime = 3.0f;
-	const float WaitResetTime = 3.0f;
+	const float PrepareTime = 5.0f;
+	const float WaitResetTime = 4.0f;
 	const float HightlightTime = 1.0f;
 	const float StageOverWaitTime = 3.0f;
-	const float GoToNextStageWaitTime = 5.0f;
+	const float GoToNextStageWaitTime = 5.5f;
 	const float GameOverWaitTime = 4.0f;
 	const int StartLifeCount = 5;
 
@@ -197,9 +197,13 @@ public class StageManager : Singleton<StageManager>
 				break;
 			case EState.Prepare:
 				CurrentStage.SetActiveReadyText(true);
+				AudioManager.Instance.PlaySound(EBgmId.StartMusic);
 				StartCoroutine(CountDownPrepareTime());
 				break;
 			case EState.Play:
+				AudioManager.Instance.PlayRandomBgm();
+				AudioManager.Instance.SetGhostSoundClip(ESfxId.GhostSiren);
+				AudioManager.Instance.PlayGhostSound(true);
 				CurrentStage.SetActiveReadyText(false);
 				break;
 			case EState.PacManDie:
@@ -209,9 +213,12 @@ public class StageManager : Singleton<StageManager>
 				StartCoroutine(CountDownResetTime());
 				break;
 			case EState.GameOver:
+				AudioManager.Instance.StopBgm();
 				StartCoroutine(StartGameOverAnimation());
 				break;
 			case EState.StageOver:
+				AudioManager.Instance.StopBgm();
+				AudioManager.Instance.PlayGhostSound(false);
 				fruitIndex++;
 				StartCoroutine(CountDownStageOverTime());
 				ScoreManager.Instance.SaveCurrentScore();
@@ -345,6 +352,8 @@ public class StageManager : Singleton<StageManager>
 			yield return null;
 		}
 
+		AudioManager.Instance.PlayGhostSound(false);
+
 		foreach (var child in GhostList)
 		{
 			child.gameObject.SetActive(false);
@@ -357,6 +366,7 @@ public class StageManager : Singleton<StageManager>
 
 	IEnumerator CountDownGoToNextStage()
 	{
+		AudioManager.Instance.PlaySound(ESfxId.StageClear);
 		float timer = GoToNextStageWaitTime;
 
 		while(timer > 0.0f)

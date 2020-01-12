@@ -16,6 +16,7 @@ public class PowerCookie : Food
 		}
 
 		ScoreManager.Instance.AddScore(Score);
+		AudioManager.Instance.SetGhostSoundClip(ESfxId.EatPowerCookie);
 	}
 
 }
