@@ -283,7 +283,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
-  m_Color: {r: 0.19607843, g: 0.19607843, b: 0.98039216, a: 1}
+  m_Color: {r: 0, g: 0, b: 0, a: 1}
   m_RaycastTarget: 1
   m_OnCullStateChanged:
     m_PersistentCalls:
@@ -3378,7 +3378,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
-  m_Color: {r: 0.19607843, g: 0.19607843, b: 0.98039216, a: 1}
+  m_Color: {r: 0, g: 0, b: 0, a: 1}
   m_RaycastTarget: 1
   m_OnCullStateChanged:
     m_PersistentCalls:
@@ -4251,6 +4251,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   audioStorage: {fileID: 11400000, guid: b5f1f6ba60aa98441851927795322b95, type: 2}
   bgmSource: {fileID: 1585294813}
+  ghostSource: {fileID: 0}
 --- !u!4 &1585294815
 Transform:
   m_ObjectHideFlags: 0
