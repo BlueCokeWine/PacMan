@@ -26,9 +26,22 @@ public class AudioManager : Singleton<AudioManager>
 		DontDestroyOnLoad(gameObject);
 	}
 
+	public void SetVolume(float value)
+	{
+		bgmSource.volume = value;
+	}
+
 	public void PlaySound(ESfxId id)
 	{
-		AudioSource.PlayClipAtPoint(audioStorage.Get(id), Vector3.zero);
+		if(id== ESfxId.Click && Time.timeScale == 0.0f)
+		{
+			Time.timeScale = 1.0f;
+			AudioSource.PlayClipAtPoint(audioStorage.Get(id), Vector3.zero);
+			Time.timeScale = 0.0f;
+		} else
+		{
+			AudioSource.PlayClipAtPoint(audioStorage.Get(id), Vector3.zero);
+		}
 	}
 
 	public void PlaySound(EBgmId id)
