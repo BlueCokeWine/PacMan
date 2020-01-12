@@ -4585,11 +4585,11 @@ Tilemap:
       e01: 0
       e02: 0
       e03: 0
-      e10: 0
+      e10: -0
       e11: 1
       e12: 0
       e13: 0
-      e20: 0
+      e20: -0
       e21: 0
       e22: 1
       e23: 0
@@ -4599,15 +4599,15 @@ Tilemap:
       e33: 1
   - m_RefCount: 102
     m_Data:
-      e00: 0
-      e01: 1
+      e00: 0.000000059604645
+      e01: 0.99999994
       e02: 0
       e03: 0
-      e10: -1
-      e11: 0
-      e12: 0
+      e10: -0.99999994
+      e11: 0.000000059604645
+      e12: -0
       e13: 0
-      e20: 0
+      e20: -0
       e21: 0
       e22: 1
       e23: 0
@@ -4654,15 +4654,15 @@ Tilemap:
   - m_RefCount: 142
     m_Data:
       e00: -1
-      e01: 0
-      e02: 0
+      e01: -0.00000008742278
+      e02: -0
       e03: 0
-      e10: 0
+      e10: 0.00000008742278
       e11: -1
       e12: 0
       e13: 0
       e20: 0
-      e21: 0
+      e21: -0
       e22: 1
       e23: 0
       e30: 0
@@ -4671,16 +4671,16 @@ Tilemap:
       e33: 1
   - m_RefCount: 97
     m_Data:
-      e00: 0
-      e01: -1
-      e02: 0
+      e00: 0.000000059604645
+      e01: -0.99999994
+      e02: -0
       e03: 0
-      e10: 1
-      e11: 0
+      e10: 0.99999994
+      e11: 0.000000059604645
       e12: 0
       e13: 0
       e20: 0
-      e21: 0
+      e21: -0
       e22: 1
       e23: 0
       e30: 0
@@ -4705,13 +4705,31 @@ Tilemap:
       e31: 0
       e32: 0
       e33: 1
+  - m_RefCount: 0
+    m_Data:
+      e00: 7333136
+      e01: 0
+      e02: 0
+      e03: -1.95141e-32
+      e10: 8.55e-43
+      e11: 8.55e-43
+      e12: 0
+      e13: 4.5904e-41
+      e20: 0
+      e21: 0
+      e22: 3.2306643e-27
+      e23: -2.466394e-32
+      e30: 0
+      e31: 0
+      e32: 8.55e-43
+      e33: 4.5904e-41
   m_TileColorArray:
   - m_RefCount: 492
     m_Data: {r: 1, g: 1, b: 1, a: 1}
   m_AnimationFrameRate: 1
   m_Color: {r: 0, g: 0, b: 1, a: 1}
-  m_Origin: {x: -3, y: -11, z: 0}
-  m_Size: {x: 34, y: 42, z: 1}
+  m_Origin: {x: -33, y: -11, z: 0}
+  m_Size: {x: 64, y: 42, z: 1}
   m_TileAnchor: {x: 0.5, y: 0.5, z: 0}
   m_TileOrientation: 0
   m_TileOrientationMatrix:
@@ -5108,7 +5126,7 @@ GameObject:
   - component: {fileID: 1328893648}
   - component: {fileID: 1328893649}
   m_Layer: 0
-  m_Name: Stage_Original
+  m_Name: Stage_Test
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

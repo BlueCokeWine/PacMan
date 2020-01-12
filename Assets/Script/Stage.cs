@@ -65,6 +65,11 @@ public class Stage : MonoBehaviour
 		return placeList;
 	}
 
+	public Vector3 GetFruitCreatePosition()
+	{
+		return readyText.transform.position;
+	}
+
 	public bool CanMove(Vector2Int place)
 	{
 		Vector3Int checkPlace = new Vector3Int(place.x, place.y, 0);

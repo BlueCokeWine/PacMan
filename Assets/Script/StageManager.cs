@@ -31,6 +31,7 @@ public class StageManager : Singleton<StageManager>
 	[SerializeField] GameObject prefPinky;
 	[SerializeField] GameObject prefInky;
 	[SerializeField] GameObject prefClyde;
+	[SerializeField] GameObject prefFruit;
 
 	[SerializeField] List<GameObject> stageList;
 
@@ -46,6 +47,10 @@ public class StageManager : Singleton<StageManager>
 	int stageIndex = 0;
 	int lifeCount;
 
+	int fruitIndex = 0;
+	bool isFruitCreated = false;
+	LinkedList<Fruit.EType> eatenFruitList = new LinkedList<Fruit.EType>();
+
 	void Awake()
 	{
 		if (instance != null)
@@ -57,7 +62,6 @@ public class StageManager : Singleton<StageManager>
 		instance = this;
 		DontDestroyOnLoad(gameObject);
 		SceneManager.sceneLoaded += OnSceneLoaded;
-		AddMenuFunction();
 	}
 
 	void OnSceneLoaded(Scene scene, LoadSceneMode mode)
@@ -71,6 +75,7 @@ public class StageManager : Singleton<StageManager>
 				MenuUIManager.Instance.SetStageIndexText(stageIndex);
 				break;
 			case SceneName.StageSceneName:
+				isFruitCreated = false;
 				CreateStage(stageList[stageIndex]);
 				AddCheatFunction();
 				StageUIManager.Instance.SetLifeCount(lifeCount);
@@ -119,22 +124,6 @@ public class StageManager : Singleton<StageManager>
 	{
 		var ghostPlaceList = CurrentStage.GetGhostStartPlace();
 
-		//var ghost1 = Instantiate(prefBlinky).GetComponent<Blinky>();
-		//ghost1.Init(ghostPlaceList[0], CurrentStage.Min, CurrentStage.Max);
-		//GhostList.Add(ghost1);
-
-		//var ghost2 = Instantiate(prefPinky).GetComponent<Pinky>();
-		//ghost2.Init(ghostPlaceList[1], CurrentStage.Min, CurrentStage.Max);
-		//GhostList.Add(ghost2);
-
-		//var ghost3 = Instantiate(prefInky).GetComponent<Inky>();
-		//ghost3.Init(ghostPlaceList[2], CurrentStage.Min, CurrentStage.Max);
-		//GhostList.Add(ghost3);
-
-		//var ghost4 = Instantiate(prefClyde).GetComponent<Clyde>();
-		//ghost4.Init(ghostPlaceList[3], CurrentStage.Min, CurrentStage.Max);
-		//GhostList.Add(ghost4);
-
 		for(int i = 0; i < ghostPlaceList.Count; i++)
 		{
 			Ghost ghost;
@@ -166,15 +155,28 @@ public class StageManager : Singleton<StageManager>
 
 	public void CheckStageOver()
 	{
+		int foodCount = FoodList.Count;
+		int eatenFoodCount = 0;
+
 		foreach (var child in FoodList)
 		{
-			if (!child.IsEaten)
+			if (child.IsEaten)
 			{
-				return;
+				eatenFoodCount++;
 			}
 		}
 
-		SetGameState(EState.StageOver);
+		if(!isFruitCreated && eatenFoodCount > foodCount * 0.5f)
+		{
+			Vector3 createPosition = CurrentStage.GetFruitCreatePosition();
+			Instantiate(prefFruit, createPosition, Quaternion.identity);
+			isFruitCreated = true;
+		}
+
+		if(eatenFoodCount == foodCount)
+		{
+			SetGameState(EState.StageOver);
+		}
 	}
 
 	public void SetGameState(EState state)
@@ -210,6 +212,7 @@ public class StageManager : Singleton<StageManager>
 				StartCoroutine(StartGameOverAnimation());
 				break;
 			case EState.StageOver:
+				fruitIndex++;
 				StartCoroutine(CountDownStageOverTime());
 				ScoreManager.Instance.SaveCurrentScore();
 				break;
@@ -235,6 +238,12 @@ public class StageManager : Singleton<StageManager>
 	public bool IsDoorPlace(Vector2Int place)
 	{
 		return CurrentStage.IsDoorTile(place);
+	}
+
+	public void AddEatenFruit(Fruit.EType type)
+	{
+		eatenFruitList.AddFirst(type);
+		// UI 추가
 	}
 
 	#region UI Func
@@ -264,6 +273,9 @@ public class StageManager : Singleton<StageManager>
 	void StartNewGame()
 	{
 		lifeCount = StartLifeCount;
+		fruitIndex = 0;
+		eatenFruitList.Clear();
+
 		ScoreManager.ResetCurrentScore();
 	}
 	#endregion
@@ -290,6 +302,7 @@ public class StageManager : Singleton<StageManager>
 	}
 	#endregion
 
+	#region Timer Func
 	IEnumerator CountDownPrepareTime()
 	{
 		float timer = PrepareTime;
@@ -392,5 +405,6 @@ public class StageManager : Singleton<StageManager>
 		//cameraEffect.EndHighlightMode();
 		IsHighlightTime = false;
 	}
+	#endregion
 
 }

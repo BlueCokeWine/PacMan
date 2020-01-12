@@ -35,6 +35,7 @@ public abstract class Ghost : Actor
 
 	const int StraightDistance = 10;
 	const int DiagonalDistance = 14;
+	const int StartTimidScore = 200;
 	const float TimidTimeLength = 15.0f;
 	const string WallTileTag = "TileMap_Wall";
 
@@ -55,6 +56,7 @@ public abstract class Ghost : Actor
 	protected Direction direction;
 
 	float timidTimer;
+	static int timidScore;
 
 	protected Vector2Int homePlace;
 	protected Vector2Int stageMin, stageMax;
@@ -112,6 +114,8 @@ public abstract class Ghost : Actor
 			{
 				case EState.Timid:
 					SetState(EState.GoHome);
+					ScoreManager.Instance.AddScore(timidScore, Score.EType.Ghost, transform.position);
+					timidScore *= 2;
 					StartCoroutine(StageManager.Instance.StartHighlightTime());
 					break;
 				case EState.GoHome:
@@ -140,6 +144,7 @@ public abstract class Ghost : Actor
 				waypointQueue.Clear();
 				moveHandler.MoveSpeed = moveSpeed * 0.5f;
 				timidTimer = TimidTimeLength;
+				timidScore = StartTimidScore;
 				if (currentState != EState.Timid)
 				{
 					StartCoroutine(StartTimidTime());

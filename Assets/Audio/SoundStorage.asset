@@ -1,0 +1,50 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4d04a67020506d5449db91698f949f7a, type: 3}
+  m_Name: SoundStorage
+  m_EditorClassIdentifier: 
+  sfxSrcList:
+  - soundFile: {fileID: 8300000, guid: fba49a58e74939f4ca059c3cbf08a3b5, type: 3}
+    sfxId: 0
+  - soundFile: {fileID: 8300000, guid: ea3682de43ae421458153d038a002abb, type: 3}
+    sfxId: 1
+  - soundFile: {fileID: 8300000, guid: cdd02a821e880564cb96ec0ac43c053c, type: 3}
+    sfxId: 2
+  - soundFile: {fileID: 8300000, guid: efac07b4130bfc7458d59c2972603c62, type: 3}
+    sfxId: 3
+  - soundFile: {fileID: 8300000, guid: 83d8bcd42f1d01f498d135939c3768f1, type: 3}
+    sfxId: 4
+  - soundFile: {fileID: 8300000, guid: 4a529739f12dd784bab3caabb4961555, type: 3}
+    sfxId: 5
+  - soundFile: {fileID: 8300000, guid: 248a9570f6fed664ca82e8df9e3ba46e, type: 3}
+    sfxId: 6
+  - soundFile: {fileID: 8300000, guid: aaa1983b0a46f0943aa2156623925e07, type: 3}
+    sfxId: 7
+  - soundFile: {fileID: 8300000, guid: 14b78c3218abea84ea7a613f4417893a, type: 3}
+    sfxId: 8
+  - soundFile: {fileID: 8300000, guid: c7364a28e6af57b4995d16c20824729e, type: 3}
+    sfxId: 9
+  bgmSrcList:
+  - soundFile: {fileID: 8300000, guid: 0a32644b68ea60e43b203e8d740c49c7, type: 3}
+    bgmId: 0
+  - soundFile: {fileID: 8300000, guid: 033fd8056f84fec44906f3123bbbdba6, type: 3}
+    bgmId: 1
+  - soundFile: {fileID: 8300000, guid: a4aa1a377d35a4442aa33690eca68167, type: 3}
+    bgmId: 2
+  - soundFile: {fileID: 8300000, guid: 76f445b4d84c7f8429e2595de70ae158, type: 3}
+    bgmId: 3
+  - soundFile: {fileID: 8300000, guid: eaf1509c6b03ace44880c54a617aad08, type: 3}
+    bgmId: 4
+  - soundFile: {fileID: 8300000, guid: 63c18f315bbe28846be412db9bdcd5af, type: 3}
+    bgmId: 5
+  - soundFile: {fileID: 8300000, guid: 531a9a3fc7163da40b5f80b351fe2518, type: 3}
+    bgmId: 6
