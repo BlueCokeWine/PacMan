@@ -169,7 +169,8 @@ public class StageManager : Singleton<StageManager>
 		if(!isFruitCreated && eatenFoodCount > foodCount * 0.5f)
 		{
 			Vector3 createPosition = CurrentStage.GetFruitCreatePosition();
-			Instantiate(prefFruit, createPosition, Quaternion.identity);
+			Fruit fruit = Instantiate(prefFruit, createPosition, Quaternion.identity).GetComponent<Fruit>();
+			fruit.Init(fruitIndex);
 			isFruitCreated = true;
 		}
 
@@ -198,9 +199,11 @@ public class StageManager : Singleton<StageManager>
 			case EState.Prepare:
 				CurrentStage.SetActiveReadyText(true);
 				AudioManager.Instance.PlaySound(EBgmId.StartMusic);
+				AudioManager.Instance.SetVolume(0.5f);
 				StartCoroutine(CountDownPrepareTime());
 				break;
 			case EState.Play:
+				AudioManager.Instance.SetVolume(1.0f);
 				AudioManager.Instance.PlayRandomBgm();
 				AudioManager.Instance.SetGhostSoundClip(ESfxId.GhostSiren);
 				AudioManager.Instance.PlayGhostSound(true);
