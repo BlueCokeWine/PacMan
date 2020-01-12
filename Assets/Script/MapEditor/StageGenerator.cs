@@ -1,4 +1,5 @@
-﻿#pragma warning disable CS0649
+﻿#if UNITY_EDITOR
+#pragma warning disable CS0649
 using System.Collections;
 using System.Collections.Generic;
 using System.IO;
@@ -99,5 +100,5 @@ public class StageGenerator : MonoBehaviour
 			DestroyImmediate(currentStage.gameObject);
 		}
 	}
-
 }
+#endif
