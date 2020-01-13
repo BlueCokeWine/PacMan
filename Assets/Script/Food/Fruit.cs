@@ -74,6 +74,8 @@ public class Fruit : Food
 
         ScoreManager.Instance.AddScore(score, Score.EType.Fruit, transform.position);
         AudioManager.Instance.PlaySound(ESfxId.EatFruit);
-    }
+		StageManager.Instance.AddEatenFruit(Type);
+
+	}
 
 }

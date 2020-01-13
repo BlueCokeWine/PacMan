@@ -1226,6 +1226,7 @@ MonoBehaviour:
   stageList:
   - {fileID: 1328893647, guid: d8d3441c219e6c544944c3dd171976fe, type: 3}
   - {fileID: 8021235199846366304, guid: 7f958e92219da134a9c094061cebf338, type: 3}
+  - {fileID: 2124048520, guid: c36a8908e9c3e364da0a0b5537e8d277, type: 3}
 --- !u!4 &262383348
 Transform:
   m_ObjectHideFlags: 0

@@ -78,6 +78,7 @@ public class StageManager : Singleton<StageManager>
 				isFruitCreated = false;
 				CreateStage(stageList[stageIndex]);
 				AddCheatFunction();
+				InitPreEatenFruitList();
 				StageUIManager.Instance.SetLifeCount(lifeCount);
 				break;
 		}
@@ -250,10 +251,19 @@ public class StageManager : Singleton<StageManager>
 		return CurrentStage.IsDoorTile(place);
 	}
 
+	public void InitPreEatenFruitList()
+	{
+		foreach(var item in eatenFruitList)
+		{
+			StageUIManager.Instance.AddEatenFruit(item);
+		}
+	}
+
 	public void AddEatenFruit(Fruit.EType type)
 	{
 		eatenFruitList.AddFirst(type);
-		// UI 추가
+
+		StageUIManager.Instance.AddEatenFruit(type);
 	}
 
 	#region UI Func

@@ -4,6 +4,8 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
+using UnityEngine.UI;
+using UnityEngine.U2D;
 using TMPro;
 
 public class StageUIManager : Singleton<StageUIManager>
@@ -23,6 +25,10 @@ public class StageUIManager : Singleton<StageUIManager>
 	[SerializeField] TextMeshProUGUI highScoreText;
 	[SerializeField] TextMeshProUGUI currentScoreText;
 	[SerializeField] TextMeshProUGUI remainLifeText;
+
+	[SerializeField] Transform eatenFruitContent;
+	[SerializeField] GameObject eatenFruitPref;
+	[SerializeField] SpriteAtlas fruitAtlas;
 
 	public Action InstantWinAction;
 	public Action ToggleGhostAction;
@@ -57,6 +63,15 @@ public class StageUIManager : Singleton<StageUIManager>
 	public void StartGameOverAnimation()
 	{
 		ActivePanel(EPanel.GameOver);
+	}
+
+	public void AddEatenFruit(Fruit.EType type)
+	{
+		Sprite sprite = fruitAtlas.GetSprite(type.ToString());
+
+		Image item = Instantiate(eatenFruitPref, eatenFruitContent).GetComponent<Image>();
+		item.sprite = sprite;
+		item.transform.SetAsFirstSibling();
 	}
 
 	#region Game UI
