@@ -1,0 +1,7 @@
+ManifestFileVersion: 0
+CRC: 3818313525
+AssetBundleManifest:
+  AssetBundleInfos:
+    Info_0:
+      Name: stage_asset
+      Dependencies: {}

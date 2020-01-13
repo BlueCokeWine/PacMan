@@ -49,7 +49,7 @@ public class MenuUIManager : Singleton<MenuUIManager>
     {
         AudioManager.Instance.PlaySound(ESfxId.Click);
         StartStageAction?.Invoke();
-        SceneManager.LoadScene(SceneName.StageSceneName);
+		LoadingSceneManager.LoadScene(SceneName.StageSceneName);
     }
 
     public void ButtonEvent_ExitProgram()

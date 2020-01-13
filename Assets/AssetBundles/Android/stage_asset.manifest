@@ -1,0 +1,79 @@
+ManifestFileVersion: 0
+CRC: 227729798
+Hashes:
+  AssetFileHash:
+    serializedVersion: 2
+    Hash: 024e1a2595569407df1665e1661320f8
+  TypeTreeHash:
+    serializedVersion: 2
+    Hash: 9de3cfb6c41ea5a44b3db1c4a496d822
+HashAppended: 0
+ClassTypes:
+- Class: 1
+  Script: {instanceID: 0}
+- Class: 4
+  Script: {instanceID: 0}
+- Class: 21
+  Script: {instanceID: 0}
+- Class: 23
+  Script: {instanceID: 0}
+- Class: 28
+  Script: {instanceID: 0}
+- Class: 33
+  Script: {instanceID: 0}
+- Class: 48
+  Script: {instanceID: 0}
+- Class: 49
+  Script: {instanceID: 0}
+- Class: 65
+  Script: {instanceID: 0}
+- Class: 74
+  Script: {instanceID: 0}
+- Class: 91
+  Script: {instanceID: 0}
+- Class: 95
+  Script: {instanceID: 0}
+- Class: 114
+  Script: {fileID: 13312, guid: 0000000000000000e000000000000000, type: 0}
+- Class: 114
+  Script: {fileID: 11500000, guid: a2aaa1c1fe5169648abcac8d81ca8619, type: 3}
+- Class: 114
+  Script: {fileID: 11500000, guid: 4ffcb842ae926b04187bc316e18aba43, type: 3}
+- Class: 114
+  Script: {fileID: 11500000, guid: 26ee0df2a4b220841b41daa244a58ee2, type: 3}
+- Class: 114
+  Script: {fileID: 11500000, guid: 71c1514a6bd24e1e882cebbe1904ce04, type: 3}
+- Class: 114
+  Script: {fileID: 11500000, guid: a46a4b9c5706ae344815394d20d11150, type: 3}
+- Class: 114
+  Script: {fileID: 11500000, guid: 0f9a37fc6a60e8b4ea9527c07f8afb4d, type: 3}
+- Class: 114
+  Script: {fileID: 11500000, guid: fd7c0b3da6bc5994c8c221e17ee95f8e, type: 3}
+- Class: 114
+  Script: {fileID: 11500000, guid: 9541d86e2fd84c1d9990edf0852d74ab, type: 3}
+- Class: 114
+  Script: {fileID: 11500000, guid: 9d1514134bc4fbd41bb739b1b9a49231, type: 3}
+- Class: 115
+  Script: {instanceID: 0}
+- Class: 212
+  Script: {instanceID: 0}
+- Class: 213
+  Script: {instanceID: 0}
+- Class: 222
+  Script: {instanceID: 0}
+- Class: 224
+  Script: {instanceID: 0}
+- Class: 19719996
+  Script: {instanceID: 0}
+- Class: 156049354
+  Script: {instanceID: 0}
+- Class: 483693784
+  Script: {instanceID: 0}
+- Class: 1839735485
+  Script: {instanceID: 0}
+Assets:
+- Assets/Prefab/Stage/Stage_ChampionDX.prefab
+- Assets/Json/StageData.json
+- Assets/Prefab/Stage/Stage_ChampionDX_2.prefab
+- Assets/Prefab/Stage/Stage_Original.prefab
+Dependencies: []

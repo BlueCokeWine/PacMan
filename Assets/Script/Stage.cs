@@ -6,6 +6,13 @@ using UnityEngine.Tilemaps;
 
 public class Stage : MonoBehaviour
 {
+	public struct JsonData
+	{
+		public int stageIndex;
+		public string stageName;
+		public string stagePath;
+	}
+
 	[SerializeField] Transform mazeGrid;
 	[SerializeField] Tilemap groundTilemap;
 	[SerializeField] Tilemap foodTilemap;

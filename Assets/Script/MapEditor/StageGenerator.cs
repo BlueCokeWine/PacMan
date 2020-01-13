@@ -1,14 +1,15 @@
 ﻿#if UNITY_EDITOR
 #pragma warning disable CS0649
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.IO;
+using System.Reflection;
 using UnityEngine;
 using UnityEngine.Tilemaps;
 using UnityEditor;
 using Newtonsoft.Json;
-using System.Reflection;
-using System;
+
 
 [ExecuteInEditMode]
 public class StageGenerator : MonoBehaviour
@@ -16,6 +17,8 @@ public class StageGenerator : MonoBehaviour
 	[SerializeField] GameObject defaultStagePref;
 	[SerializeField] Sprite warpCoverSprite;
 	[SerializeField] Stage currentStage;
+
+	public List<GameObject> stageList = new List<GameObject>();
 
 	public void CreateStage()
 	{
@@ -100,5 +103,27 @@ public class StageGenerator : MonoBehaviour
 			DestroyImmediate(currentStage.gameObject);
 		}
 	}
+
+	public void CreateStageListJson()
+	{
+		List<Stage.JsonData> dataList = new List<Stage.JsonData>();
+		int index = 0;
+
+		foreach(var child in stageList)
+		{
+			Stage.JsonData data;
+			data.stageIndex = index;
+			data.stageName = "Stage " + index.ToString();
+			data.stagePath = AssetDatabase.GetAssetPath(child);
+			index++;
+			dataList.Add(data);
+		}
+
+		string dataStr = JsonConvert.SerializeObject(dataList);
+		Debug.Log(dataStr);
+		string path = Application.dataPath + "/Json/StageData.json";
+		File.WriteAllText(path, dataStr);
+	}
+
 }
 #endif
