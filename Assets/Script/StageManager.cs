@@ -4,6 +4,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
+using Newtonsoft.Json;
 
 public class StageManager : Singleton<StageManager>
 {
@@ -26,6 +27,8 @@ public class StageManager : Singleton<StageManager>
 	const float GameOverWaitTime = 4.0f;
 	const int StartLifeCount = 5;
 
+	const string StageJsonDataBundlePath = "Assets/Json/StageData.json";
+
 	[SerializeField] GameObject prefPacMan;
 	[SerializeField] GameObject prefBlinky;
 	[SerializeField] GameObject prefPinky;
@@ -33,7 +36,6 @@ public class StageManager : Singleton<StageManager>
 	[SerializeField] GameObject prefClyde;
 	[SerializeField] GameObject prefFruit;
 
-	[SerializeField] List<GameObject> stageList;
 
 	public EState GameState { get; private set; }
 	public Stage CurrentStage { get; private set; }
@@ -45,6 +47,8 @@ public class StageManager : Singleton<StageManager>
 	public bool IsHighlightTime { get; private set; }
 
 	int stageIndex = 0;
+	List<GameObject> stageList = new List<GameObject>();
+
 	int lifeCount;
 
 	int fruitIndex = 0;
@@ -62,6 +66,18 @@ public class StageManager : Singleton<StageManager>
 		instance = this;
 		DontDestroyOnLoad(gameObject);
 		SceneManager.sceneLoaded += OnSceneLoaded;
+	}
+
+	void Start()
+	{
+		TextAsset ta = BundleManager.Instance.GetStageBundleObject(StageJsonDataBundlePath) as TextAsset;
+		Stage.JsonData[] datas = JsonConvert.DeserializeObject<Stage.JsonData[]>(ta.text);
+
+		foreach(var item in datas)
+		{
+			GameObject stagePref = BundleManager.Instance.GetStageBundleObject(item.stagePath) as GameObject;
+			stageList.Add(stagePref);
+		}
 	}
 
 	void OnSceneLoaded(Scene scene, LoadSceneMode mode)

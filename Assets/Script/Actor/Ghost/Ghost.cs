@@ -174,6 +174,11 @@ public abstract class Ghost : Actor
 	{
 		startPlace = Util.RoundToVectorInt((Vector2)transform.position);
 		this.targetPlace = targetPlace;
+		if (!StageManager.Instance.CanMovePlace(startPlace))
+		{
+			SetPlace(homePlace);
+			startPlace = homePlace;
+		}
 
 		waypointQueue.Clear();
 		PathFinding();
