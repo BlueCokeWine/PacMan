@@ -5,6 +5,7 @@ using UnityEngine;
 public class Pinky : Ghost
 {
 	const int PredictionWeight = 3;
+	const float PrepareTime = 10.0f;
 
 	private void Awake()
 	{
@@ -21,6 +22,8 @@ public class Pinky : Ghost
 
 		switch (currentState)
 		{
+			case EState.Prepare:
+				break;
 			case EState.Normal:
 				targetPlace = FindPredictionPlace();
 				SetTargetPlace(targetPlace);
@@ -90,6 +93,11 @@ public class Pinky : Ghost
 		}
 
 		return predictionPlace;
+	}
+
+	protected override void PrepareAtHome()
+	{
+		StartCoroutine(StartPrepareTime(PrepareTime));
 	}
 
 }

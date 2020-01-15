@@ -155,7 +155,7 @@ MonoBehaviour:
     type: 2}
   eyeAnimatorController: {fileID: 22100000, guid: de02d64f08132b4439ec0ece087b438d,
     type: 2}
-  moveSpeed: 7
+  moveSpeed: 6
 --- !u!114 &1346698031506604943
 MonoBehaviour:
   m_ObjectHideFlags: 0

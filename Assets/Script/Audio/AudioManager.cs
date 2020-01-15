@@ -63,7 +63,9 @@ public class AudioManager : Singleton<AudioManager>
 
 	public void SetGhostSoundClip(ESfxId id)
 	{
-		if(id == currentGhostSound)
+		Debug.Log("Called");
+
+		if (id == currentGhostSound)
 		{
 			return;
 		}

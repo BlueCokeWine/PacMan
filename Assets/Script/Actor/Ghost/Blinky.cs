@@ -4,6 +4,8 @@ using UnityEngine;
 
 public class Blinky : Ghost
 {
+	const float PrepareTime = 0.0f;
+
 	private void Awake()
 	{
 		gizmoColor = Color.red;
@@ -16,6 +18,8 @@ public class Blinky : Ghost
 
 		switch (currentState)
 		{
+			case EState.Prepare:
+				break;
 			case EState.Warp:
 				if(waypointQueue.Count == 0)
 				{
@@ -38,6 +42,10 @@ public class Blinky : Ghost
 				}
 				break;
 			default:
+				float eatenFoodRatio = StageManager.Instance.GetEatenFoodRatio();
+				float dynamicMoveSpeed = Mathf.Lerp(moveSpeed / 2, moveSpeed, eatenFoodRatio);
+				moveHandler.MoveSpeed = dynamicMoveSpeed;
+
 				targetPlace = StageManager.Instance.Player.CurrentPlace;
 				targetPlace.x += (int)StageManager.Instance.Player.CurrentDir.X;
 				targetPlace.y += (int)StageManager.Instance.Player.CurrentDir.Y;
@@ -46,4 +54,8 @@ public class Blinky : Ghost
 		}
 	}
 
+	protected override void PrepareAtHome()
+	{
+		StartCoroutine(StartPrepareTime(PrepareTime));
+	}
 }

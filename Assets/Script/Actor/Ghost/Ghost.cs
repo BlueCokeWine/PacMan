@@ -26,6 +26,7 @@ public abstract class Ghost : Actor
 {
 	public enum EState
 	{
+		Prepare,
 		Normal,
 		Tracking,
 		Warp,
@@ -48,7 +49,7 @@ public abstract class Ghost : Actor
 	[SerializeField]
 	protected float moveSpeed;
 
-	MoveHandler moveHandler;
+	protected MoveHandler moveHandler;
 	GhostAnimationHandler animHandler;
 
 	protected Ghost partner;
@@ -75,30 +76,38 @@ public abstract class Ghost : Actor
 		moveHandler = GetComponent<MoveHandler>();
 		animHandler = GetComponent<GhostAnimationHandler>();
 		moveHandler.Init(moveSpeed, SetNextPlace);
+		moveHandler.SetDestination(homePlace, homePlace);
 
 		this.partner = partner;
 		this.homePlace = homePlace;
 		this.stageMin = stageMin;
 		this.stageMax = stageMax;
-		currentState = EState.Normal;
+		currentState = EState.Prepare;
 
 		SetPlace(homePlace);
-		SetNextPlace();
+		PrepareAtHome();
 	}
 
 	public override void ResetData()
 	{
+		StopAllCoroutines();
 		animHandler.ResetParam();
 		moveHandler.SetDestination(homePlace, homePlace);
 		waypointQueue.Clear();
 		SetPlace(homePlace);
-		SetState(EState.Normal);
+		currentState = EState.Prepare;
+		PrepareAtHome();
 	}
 
 	void Update()
 	{
 		if(StageManager.Instance.GameState == StageManager.EState.Play)
 		{
+			if(currentState == EState.Prepare)
+			{
+				return;
+			}
+
 			if(!StageManager.Instance.IsHighlightTime || currentState == EState.GoHome)
 			{
 				moveHandler.Move();
@@ -140,7 +149,7 @@ public abstract class Ghost : Actor
 		switch (state)
 		{
 			case EState.Timid:
-				if(currentState == EState.GoHome)
+				if(currentState == EState.GoHome || currentState == EState.Prepare)
 				{
 					return;
 				}
@@ -206,6 +215,8 @@ public abstract class Ghost : Actor
 	}
 
 	protected abstract void UpdateActionDecision();
+
+	protected abstract void PrepareAtHome();
 
 	protected void SetNextPlace()
 	{
@@ -307,6 +318,20 @@ public abstract class Ghost : Actor
 		{
 			SetState(EState.Normal);
 		}
+	}
+
+	protected IEnumerator StartPrepareTime(float time)
+	{
+		float timer = time + StageManager.PrepareTime;
+
+		while(timer > 0.0f)
+		{
+			timer -= Time.deltaTime;
+
+			yield return null;
+		}
+
+		SetState(EState.Normal);
 	}
 
 	#region Animation

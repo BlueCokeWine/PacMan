@@ -4,6 +4,8 @@ using UnityEngine;
 
 public class Clyde : Ghost
 {
+	const float PrepareTime = 20.0f;
+
 	void Awake()
 	{
 		gizmoColor = Color.yellow;
@@ -23,6 +25,8 @@ public class Clyde : Ghost
 		{
 			switch (currentState)
 			{
+				case EState.Prepare:
+					break;
 				case EState.Warp:
 					if (waypointQueue.Count == 0)
 					{
@@ -66,4 +70,8 @@ public class Clyde : Ghost
 		return randomPlace;
 	}
 
+	protected override void PrepareAtHome()
+	{
+		StartCoroutine(StartPrepareTime(PrepareTime));
+	}
 }

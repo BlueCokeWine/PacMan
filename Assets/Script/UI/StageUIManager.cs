@@ -90,6 +90,10 @@ public class StageUIManager : Singleton<StageUIManager>
 
 	public void SetLifeCount(int count)
 	{
+		if(count < 0)
+		{
+			count = 0;
+		}
 		remainLifeText.text = count.ToString();
 	}
 

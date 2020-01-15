@@ -5,6 +5,7 @@ using UnityEngine;
 public class Inky : Ghost
 {
 	const int MaxDistanceWeight = 5;
+	const float PrepareTime = 20.0f;
 
 	Blinky blinky;
 
@@ -23,6 +24,8 @@ public class Inky : Ghost
 
 			switch (currentState)
 			{
+				case EState.Prepare:
+					break;
 				case EState.Warp:
 					if (waypointQueue.Count == 0)
 					{
@@ -85,6 +88,11 @@ public class Inky : Ghost
 		int symmetry = 0;
 		symmetry = ((center - original) * 2) + original;
 		return symmetry;
+	}
+
+	protected override void PrepareAtHome()
+	{
+		StartCoroutine(StartPrepareTime(PrepareTime));
 	}
 
 }

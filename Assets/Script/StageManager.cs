@@ -19,7 +19,7 @@ public class StageManager : Singleton<StageManager>
 		StageOver
 	}
 
-	const float PrepareTime = 5.0f;
+	public const float PrepareTime = 5.0f;
 	const float WaitResetTime = 4.0f;
 	const float HightlightTime = 1.0f;
 	const float StageOverWaitTime = 3.0f;
@@ -51,9 +51,10 @@ public class StageManager : Singleton<StageManager>
 
 	int lifeCount;
 
+	int eatenFoodCount = 0;
 	int fruitIndex = 0;
 	bool isFruitCreated = false;
-	LinkedList<Fruit.EType> eatenFruitList = new LinkedList<Fruit.EType>();
+	List<Fruit.EType> eatenFruitList = new List<Fruit.EType>();
 
 	void Awake()
 	{
@@ -92,6 +93,7 @@ public class StageManager : Singleton<StageManager>
 				break;
 			case SceneName.StageSceneName:
 				isFruitCreated = false;
+				eatenFoodCount = 0;
 				CreateStage(stageList[stageIndex]);
 				AddCheatFunction();
 				InitPreEatenFruitList();
@@ -173,7 +175,7 @@ public class StageManager : Singleton<StageManager>
 	public void CheckStageOver()
 	{
 		int foodCount = FoodList.Count;
-		int eatenFoodCount = 0;
+		eatenFoodCount = 0;
 
 		foreach (var child in FoodList)
 		{
@@ -222,7 +224,6 @@ public class StageManager : Singleton<StageManager>
 			case EState.Play:
 				AudioManager.Instance.SetVolume(1.0f);
 				AudioManager.Instance.PlayRandomBgm();
-				AudioManager.Instance.SetGhostSoundClip(ESfxId.GhostSiren);
 				AudioManager.Instance.PlayGhostSound(true);
 				CurrentStage.SetActiveReadyText(false);
 				break;
@@ -277,9 +278,15 @@ public class StageManager : Singleton<StageManager>
 
 	public void AddEatenFruit(Fruit.EType type)
 	{
-		eatenFruitList.AddFirst(type);
+		eatenFruitList.Add(type);
 
 		StageUIManager.Instance.AddEatenFruit(type);
+	}
+
+	public float GetEatenFoodRatio()
+	{
+		float ratio = (float)eatenFoodCount / (float)FoodList.Count;
+		return ratio;
 	}
 
 	#region UI Func
